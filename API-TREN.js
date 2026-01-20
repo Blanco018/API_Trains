@@ -1,32 +1,44 @@
-// Importamos Express, el framework que nos permite crear servidores web fácilmente
+// -----------------------------
+// DEPENDENCIAS
+// -----------------------------
 const express = require("express");
+const path = require("path"); // Para manejar rutas de archivos
+const session = require("express-session"); // Para manejar sesiones de usuario
+const bodyParser = require("body-parser"); // Para procesar formularios POST
+const bcrypt = require("bcrypt"); // Para encriptar contraseñas
 
-// Importamos path, que sirve para trabajar con rutas de archivos (muy importante para HTML)
-const path = require("path");
-
-// Creamos la aplicación Express
+// -----------------------------
+// INICIALIZACIÓN DE EXPRESS Y PUERTO
+// -----------------------------
 const app = express();
-
-// Definimos el puerto:
-// - Render (o cualquier hosting) usa process.env.PORT
-// - En local usamos el 3000
 const PORT = process.env.PORT || 3000;
 
 // -----------------------------
-// MIDDLEWARE
+// MIDDLEWARES
 // -----------------------------
 
-// Esta línea le dice a Express:
-// "Todo lo que esté dentro de la carpeta 'public'
-// (HTML, CSS, JS, imágenes) puede servirse directamente"
-app.use(express.static("public"));
+// Para procesar datos de formularios
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// Configuración de sesiones
+app.use(session({
+  secret: "clave-secreta-cualquiercosa", // Cambiar por una clave más segura
+  resave: false,
+  saveUninitialized: false
+}));
+
+// 🔽 ESTA LÍNEA ES CLAVE PARA LOS HTML/CSS/JS
+// Servir archivos estáticos desde la carpeta 'public'
+app.use(express.static(path.join(__dirname, "public")));
 
 // -----------------------------
-// DATOS (nuestra “base de datos”)
+// DATOS EN MEMORIA
 // -----------------------------
 
-// Array de objetos con los trenes
-// Por ahora está en memoria (más adelante podría ser una BD)
+// Usuarios almacenados en memoria (solo para pruebas)
+const users = []; // Cada usuario: { username, passwordHash }
+
+// Datos (tu “base de datos” de trenes y metros)
 const trains = [
   {
     serie: "592",
@@ -140,39 +152,82 @@ const trains = [
   }
 ];
 
+// -----------------------------
+// MIDDLEWARE DE AUTENTICACIÓN
+// -----------------------------
+function authMiddleware(req, res, next) {
+  // Verifica si hay usuario logueado en la sesión
+  if (req.session.user) {
+    next(); // Usuario autenticado → continuar
+  } else {
+    res.redirect("/login"); // No autenticado → enviar al login
+  }
+}
 
 // -----------------------------
-// RUTAS DE LA API
+// RUTAS DE AUTENTICACIÓN
 // -----------------------------
 
-// Ruta GET /trenes
-// Cuando alguien entra a:
-// http://localhost:3000/trenes
-// devolvemos los datos en formato JSON
-app.get("/trenes", (req, res) => {
+// Mostrar página de login / registro
+app.get("/login", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "TrenesLogin.html"));
+});
+
+// Registro de usuario
+app.post("/register", async (req, res) => {
+  const { username, password } = req.body;
+  if (!username || !password) return res.send("Faltan datos");
+
+  // Comprobar si usuario ya existe
+  if (users.find(u => u.username === username)) {
+    return res.send("Usuario ya existe");
+  }
+
+  // Crear hash de la contraseña para almacenar de forma segura
+  const hash = await bcrypt.hash(password, 10);
+  users.push({ username, passwordHash: hash });
+
+  res.send("Usuario creado, ahora puedes iniciar sesión");
+});
+
+// Inicio de sesión
+app.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+  const user = users.find(u => u.username === username);
+
+  if (!user) return res.send("Usuario no encontrado");
+
+  const match = await bcrypt.compare(password, user.passwordHash);
+  if (!match) return res.send("Contraseña incorrecta");
+
+  // Guardar info en la sesión
+  req.session.user = username;
+  res.redirect("/"); // Redirige a la página principal
+});
+
+// Logout
+app.get("/logout", (req, res) => {
+  req.session.destroy(); // Elimina la sesión del usuario
+  res.redirect("/login");
+});
+
+// -----------------------------
+// RUTAS PROTEGIDAS
+// -----------------------------
+
+// Página principal protegida
+app.get("/", authMiddleware, (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "TRENES.html"));
+});
+
+// RUTA API protegida
+app.get("/trenes", authMiddleware, (req, res) => {
   res.json(trains);
 });
 
 // -----------------------------
-// RUTA PRINCIPAL (FRONTEND)
+// INICIAR SERVIDOR
 // -----------------------------
-
-// Ruta GET /
-// Cuando alguien entra a:
-// http://localhost:3000
-// enviamos el archivo TRENES.html
-app.get("/", (req, res) => {
-  //res.sendFile(
-  //  path.join(__dirname, "public", "TRENES.html")
-  //);
-   res.redirect("/TRENES.html"); // fuerza a que cargue el HTML desde public
-});
-
-// -----------------------------
-// ARRANQUE DEL SERVIDOR
-// -----------------------------
-
-// Ponemos el servidor a escuchar en el puerto definido
 app.listen(PORT, () => {
-  console.log(`API funcionando en http://localhost:${PORT}`);
+  console.log(`Servidor funcionando en http://localhost:${PORT}`);
 });

@@ -1,3 +1,6 @@
+/* =========================
+   ESTILOS GENERALES
+   ========================= */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -5,6 +8,9 @@ body {
   color: #333;
 }
 
+/* =========================
+   HEADER
+   ========================= */
 header {
   background: #1e88e5;
   color: white;
@@ -12,6 +18,9 @@ header {
   text-align: center;
 }
 
+/* =========================
+   BUSCADOR
+   ========================= */
 .buscador {
   padding: 15px;
   text-align: center;
@@ -24,6 +33,9 @@ header {
   font-size: 16px;
 }
 
+/* =========================
+   TABLA DE TRENES
+   ========================= */
 table {
   width: 95%;
   margin: auto;
@@ -44,9 +56,94 @@ tr:hover {
   background: #f1f1f1;
 }
 
+/* =========================
+   FOOTER
+   ========================= */
 footer {
   margin-top: 20px;
   text-align: center;
   font-size: 14px;
   color: #666;
+}
+
+/* =====================================================
+   🔐 ESTILOS LOGIN / REGISTRO (NUEVO)
+   ===================================================== */
+
+/* Contenedor principal del login */
+.container-login {
+  max-width: 420px;
+  margin: 60px auto;
+  padding: 30px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Títulos */
+.container-login h1 {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #1e88e5;
+}
+
+/* Formularios */
+.form-login,
+.form-register {
+  margin-bottom: 25px;
+}
+
+/* Inputs */
+.container-login input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+/* Botones */
+.container-login button {
+  width: 100%;
+  padding: 12px;
+  background: #1e88e5;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.container-login button:hover {
+  background: #1565c0;
+}
+
+/* Separador visual */
+.container-login hr {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 20px 0;
+}
+
+/* Texto pequeño */
+.container-login p {
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+@media (max-width: 600px) {
+  .container-login {
+    margin: 30px 15px;
+    padding: 20px;
+  }
+
+  table {
+    font-size: 14px;
+  }
 }
