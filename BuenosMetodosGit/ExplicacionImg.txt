@@ -1,0 +1,32 @@
+Análisis de la imagen
+1. Master (o Main) — en verde
+
+Aquí está el código de producción, siempre estable.
+
+Se marcan versiones oficiales como v0.1, v0.2, v1.0, etc.
+
+Solo llegan cambios que ya han pasado por pruebas rigurosas.
+
+2. Hotfix — en morado
+
+Ramas para arreglos críticos y urgentes en producción.
+
+Se crean desde master y luego se fusionan de vuelta a master y develop.
+
+3. Release — en amarillo
+
+Ramas temporales que preparan una nueva versión para producción.
+
+Aquí se hacen ajustes finales, corrección de bugs y pruebas previas al lanzamiento.
+
+4. Develop — en naranja
+
+Rama principal para desarrollo activo.
+
+Se integran las funcionalidades nuevas antes de pasar a release y luego a master.
+
+5. Feature — en azul
+
+Ramas para desarrollar nuevas funcionalidades específicas.
+
+Se crean a partir de develop y, cuando se terminan, se fusionan de vuelta a develop.
