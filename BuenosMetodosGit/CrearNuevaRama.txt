@@ -1,0 +1,5 @@
+git checkout -b nueva-rama
+git add . (añadir nuevos cambios)
+git commit -m "mensaje"
+git push -u origin nueva-rama (solo la primera vez , luego sirve únicamente con git push)
+
