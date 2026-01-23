@@ -4,7 +4,9 @@
   "description": "",
   "main": "API-TREN.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node API-TREN.js",
+    "dev": "nodemon API-TREN.js"
   },
   "keywords": [],
   "author": "",
