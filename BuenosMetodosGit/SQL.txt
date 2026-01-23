@@ -1,0 +1,272 @@
+Perfecto 👍 vamos **paso por paso**, desde **tu carpeta `D:\API-TREN`**, como se haría en un proyecto real y ordenado.
+Voy a asumir **Node.js + MySQL**, que es lo más común y encaja con lo que vienes haciendo.
+(Avanzamos **sin saltarnos nada**).
+
+---
+
+# 🧱 PASO 1: Estructura básica del proyecto
+
+Dentro de `D:\API-TREN`, crea esta estructura de carpetas:
+
+```
+API-TREN/
+│
+├── src/
+│   ├── config/
+│   ├── routes/
+│   ├── controllers/
+│   ├── models/
+│   └── app.js
+│
+├── .env
+├── package.json
+└── README.md
+```
+
+👉 **Qué es cada cosa**
+
+* `config/` → configuración (MySQL, variables)
+* `routes/` → endpoints (`/users`, `/auth`)
+* `controllers/` → lógica del negocio
+* `models/` → conexión y consultas a MySQL
+* `app.js` → entrada principal del servidor
+
+---
+
+# 🟢 PASO 2: Inicializar Node.js en el folder
+
+Desde PowerShell, estando en `D:\API-TREN`:
+
+```powershell
+npm init -y
+```
+
+Esto crea `package.json`.
+
+---
+
+# 📦 PASO 3: Instalar dependencias necesarias
+
+```powershell
+npm install express mysql2 dotenv bcryptjs
+```
+
+Y para desarrollo:
+
+```powershell
+npm install --save-dev nodemon
+```
+
+---
+
+# ⚙️ PASO 4: Configurar variables de entorno
+
+Crea el archivo **`.env`** en la raíz:
+
+```env
+PORT=3000
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=tu_password_mysql
+DB_NAME=api_tren
+```
+
+⚠️ **Este archivo no se sube a GitHub**
+Luego lo agregaremos al `.gitignore`.
+
+---
+
+# 🔌 PASO 5: Configurar conexión a MySQL
+
+📄 `src/config/db.js`
+
+```js
+import mysql from 'mysql2';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+export const db = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME
+});
+
+db.connect(err => {
+  if (err) {
+    console.error('Error conectando a MySQL:', err);
+    return;
+  }
+  console.log('Conectado a MySQL');
+});
+```
+
+---
+
+# 🧠 PASO 6: Crear la tabla de usuarios en MySQL
+
+En MySQL (Workbench o consola):
+
+```sql
+CREATE DATABASE api_tren;
+USE api_tren;
+
+CREATE TABLE users (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(150) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+---
+
+# 🧩 PASO 7: Modelo de Usuario
+
+📄 `src/models/userModel.js`
+
+```js
+import { db } from '../config/db.js';
+
+export const createUser = (name, email, passwordHash, callback) => {
+  const sql = `
+    INSERT INTO users (name, email, password_hash)
+    VALUES (?, ?, ?)
+  `;
+  db.query(sql, [name, email, passwordHash], callback);
+};
+```
+
+---
+
+# 🎯 PASO 8: Controller de usuarios
+
+📄 `src/controllers/userController.js`
+
+```js
+import bcrypt from 'bcryptjs';
+import { createUser } from '../models/userModel.js';
+
+export const registerUser = (req, res) => {
+  const { name, email, password } = req.body;
+
+  if (!name || !email || !password) {
+    return res.status(400).json({ message: 'Datos incompletos' });
+  }
+
+  const passwordHash = bcrypt.hashSync(password, 10);
+
+  createUser(name, email, passwordHash, (err) => {
+    if (err) {
+      return res.status(500).json({ message: 'Error al crear usuario' });
+    }
+    res.status(201).json({ message: 'Usuario creado correctamente' });
+  });
+};
+```
+
+---
+
+# 🌐 PASO 9: Rutas de usuarios
+
+📄 `src/routes/userRoutes.js`
+
+```js
+import express from 'express';
+import { registerUser } from '../controllers/userController.js';
+
+const router = express.Router();
+
+router.post('/register', registerUser);
+
+export default router;
+```
+
+---
+
+# 🚀 PASO 10: App principal
+
+📄 `src/app.js`
+
+```js
+import express from 'express';
+import dotenv from 'dotenv';
+import userRoutes from './routes/userRoutes.js';
+import './config/db.js';
+
+dotenv.config();
+
+const app = express();
+app.use(express.json());
+
+app.use('/users', userRoutes);
+
+app.listen(process.env.PORT, () => {
+  console.log(`Servidor corriendo en puerto ${process.env.PORT}`);
+});
+```
+
+---
+
+# 🏃 PASO 11: Ejecutar el servidor
+
+En `package.json`, agrega:
+
+```json
+"scripts": {
+  "dev": "nodemon src/app.js"
+}
+```
+
+Luego:
+
+```powershell
+npm run dev
+```
+
+---
+
+# 🧪 PASO 12: Probar creación de usuario
+
+POST a:
+
+```
+http://localhost:3000/users/register
+```
+
+Body (JSON):
+
+```json
+{
+  "name": "Juan",
+  "email": "juan@mail.com",
+  "password": "123456"
+}
+```
+
+✔️ Se guarda en MySQL
+✔️ Contraseña hasheada
+✔️ Usuario persistente
+
+---
+
+## 🔥 Lo que acabas de construir
+
+* API real
+* Base de datos MySQL
+* Arquitectura profesional
+* Lista para crecer (auth, JWT, roles)
+
+---
+
+### Siguiente pasos (elige uno)
+
+1️⃣ Login con JWT
+2️⃣ Proteger rutas
+3️⃣ Git Flow aplicado a esta API
+4️⃣ Docker + MySQL
+5️⃣ Deploy
+
+Dime **qué paso quieres seguir** y avanzamos 🚀

@@ -6,12 +6,25 @@ const path = require("path"); // Para manejar rutas de archivos
 const session = require("express-session"); // Para manejar sesiones de usuario
 const bodyParser = require("body-parser"); // Para procesar formularios POST
 const bcrypt = require("bcrypt"); // Para encriptar contraseñas
+const mysql = require("mysql2/promise"); // Para conectar con MySQL
+require("dotenv").config(); // Para variables de entorno
 
 // -----------------------------
 // INICIALIZACIÓN DE EXPRESS Y PUERTO
 // -----------------------------
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// -----------------------------
+// CONEXIÓN A MYSQL
+// -----------------------------
+const db = mysql.createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT || 3306,
+});
 
 // -----------------------------
 // MIDDLEWARES
@@ -37,120 +50,6 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Usuarios almacenados en memoria (solo para pruebas)
 const users = []; // Cada usuario: { username, passwordHash }
-
-// Datos (tu “base de datos” de trenes y metros)
-const trains = [
-  {
-    serie: "592",
-    apodo: "Camello",
-    tipo: "Diésel",
-    servicio: "Media Distancia",
-    operador: "Renfe",
-    logo: "",
-    descripcionVisual: "Blanco, líneas rojas y moradas, morro rojo inclinado",
-    zona: "Murcia, Alicante, C. Valenciana, Extremadura"
-  },
-  {
-    serie: "598",
-    apodo: "",
-    tipo: "Diésel",
-    servicio: "Media Distancia",
-    operador: "Renfe",
-    logo: "",
-    descripcionVisual: "Blanco, líneas moradas y grises, frontal moderno",
-    zona: "Galicia, Castilla y León, Aragón"
-  },
-  {
-    serie: "449",
-    apodo: "",
-    tipo: "Eléctrico",
-    servicio: "Media Distancia",
-    operador: "Renfe",
-    logo: "",
-    descripcionVisual: "Blanco con franja morada, ventanas grandes",
-    zona: "Madrid–Valencia, Andalucía"
-  },
-  {
-    serie: "447",
-    apodo: "",
-    tipo: "Eléctrico",
-    servicio: "Cercanías",
-    operador: "Renfe",
-    logo: "",
-    descripcionVisual: "Blanco con franjas rojas, muchas puertas",
-    zona: "Madrid, Barcelona, Valencia, Sevilla"
-  },
-  {
-    serie: "102",
-    apodo: "Pato",
-    tipo: "Eléctrico",
-    servicio: "AVE",
-    operador: "Renfe",
-    logo: "",
-    descripcionVisual: "Morro muy largo y puntiagudo",
-    zona: "Madrid–Barcelona, Málaga"
-  },
-  {
-    serie: "130",
-    apodo: "Alvia",
-    tipo: "Eléctrico",
-    servicio: "Larga Distancia",
-    operador: "Renfe",
-    logo: "",
-    descripcionVisual: "Muy largo, blanco con morado",
-    zona: "Galicia, Asturias"
-  },
-  {
-    serie: "ETR 1000",
-    apodo: "Frecciarossa",
-    tipo: "Eléctrico",
-    servicio: "Alta Velocidad",
-    operador: "Iryo",
-    logo: "",
-    descripcionVisual: "Rojo oscuro, diseño aerodinámico",
-    zona: "Madrid–Barcelona, Valencia"
-  },
-  {
-    serie: "Euroduplex",
-    apodo: "",
-    tipo: "Eléctrico",
-    servicio: "Alta Velocidad",
-    operador: "Ouigo",
-    logo: "",
-    descripcionVisual: "Azul intenso, doble piso",
-    zona: "Madrid–Barcelona, Valencia"
-  },
-  {
-    serie: "Metro Series 3000 / 8000",
-    apodo: "",
-    tipo: "Metro",
-    servicio: "Metro",
-    operador: "Metro de Madrid",
-    logo: "",
-    descripcionVisual: "Blanco con franja azul, moderno",
-    zona: "Madrid capital"
-  },
-  {
-    serie: "Metro Series 3000 / 4000",
-    apodo: "",
-    tipo: "Metro",
-    servicio: "Metro",
-    operador: "TMB",
-    logo: "",
-    descripcionVisual: "Blanco con franja roja",
-    zona: "Barcelona y alrededores"
-  },
-  {
-    serie: "Metro Series 4300 / 4100",
-    apodo: "",
-    tipo: "Metro",
-    servicio: "Metro",
-    operador: "FGV",
-    logo: "",
-    descripcionVisual: "Blanco con línea verde",
-    zona: "Valencia y área metropolitana"
-  }
-];
 
 // -----------------------------
 // MIDDLEWARE DE AUTENTICACIÓN
@@ -179,9 +78,7 @@ app.post("/register", async (req, res) => {
   if (!username || !password) return res.send("Faltan datos");
 
   // Comprobar si usuario ya existe
-  if (users.find(u => u.username === username)) {
-    return res.send("Usuario ya existe");
-  }
+  if (users.find(u => u.username === username)) return res.send("Usuario ya existe");
 
   // Crear hash de la contraseña para almacenar de forma segura
   const hash = await bcrypt.hash(password, 10);
@@ -220,9 +117,87 @@ app.get("/", authMiddleware, (req, res) => {
   res.sendFile(path.join(__dirname, "public", "TRENES.html"));
 });
 
+// -----------------------------
 // RUTA API protegida
-app.get("/trenes", authMiddleware, (req, res) => {
-  res.json(trains);
+// -----------------------------
+app.get("/trenes", authMiddleware, async (req, res) => {
+  try {
+    // Traer todos los trenes desde la base de datos MySQL
+    const [rows] = await db.query("SELECT * FROM trains");
+    res.json(rows);
+  } catch (error) {
+    // Enviar error en caso de fallo
+    res.status(500).json({ ok: false, error: error.message });
+  }
+});
+
+// -----------------------------
+// RUTA PARA CREAR TABLA DE TRENES EN MYSQL
+// -----------------------------
+app.get("/create-trains-table", async (req, res) => {
+  try {
+    // SQL para crear la tabla 'trains' si no existe
+    const createTableSQL = `
+      CREATE TABLE IF NOT EXISTS trains (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        serie VARCHAR(100),
+        apodo VARCHAR(100),
+        tipo VARCHAR(50),
+        servicio VARCHAR(50),
+        operador VARCHAR(50),
+        logo VARCHAR(255),
+        descripcionVisual VARCHAR(255),
+        zona VARCHAR(255),
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `;
+
+    // Ejecuta la consulta usando la conexión 'db'
+    await db.query(createTableSQL);
+
+    // Enviar respuesta de éxito al cliente
+    res.json({ ok: true, message: 'Tabla "trains" creada correctamente (si no existía).' });
+  } catch (error) {
+    // En caso de error, enviar mensaje al cliente
+    res.status(500).json({ ok: false, error: error.message });
+  }
+});
+
+// -----------------------------
+// RUTA DE PRUEBA DE CONEXIÓN A MYSQL
+// -----------------------------
+app.get("/test-db", async (req, res) => {
+  try {
+    // Ejecuta una consulta simple para verificar conexión
+    const [rows] = await db.query("SELECT 1 + 1 AS result");
+    res.json({ ok: true, result: rows[0].result });
+  } catch (error) {
+    res.status(500).json({ ok: false, error: error.message });
+  }
+});
+
+// -----------------------------
+// RUTA PARA INSERTAR TODOS LOS TRENES EN MYSQL
+// -----------------------------
+app.get("/seed-trains", async (req, res) => {
+  try {
+    // Iteramos por cada tren definido en memoria
+    for (const tren of trains) {
+      // Insertamos todos los campos en la tabla 'trains'
+      await db.query(
+        `INSERT INTO trains 
+          (serie, apodo, tipo, servicio, operador, logo, descripcionVisual, zona) 
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        [tren.serie, tren.apodo, tren.tipo, tren.servicio, tren.operador, tren.logo, tren.descripcionVisual, tren.zona]
+      );
+    }
+
+    // Respuesta de éxito
+    res.json({ ok: true, message: "Todos los trenes de memoria se insertaron en MySQL." });
+  } catch (error) {
+    // Manejo de errores
+    res.status(500).json({ ok: false, error: error.message });
+  }
 });
 
 // -----------------------------
