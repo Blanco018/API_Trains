@@ -1,22 +1,39 @@
-// Importamos Supertest.
+// Importamos Supertest
 // Nos permite simular peticiones HTTP a Express
-// sin necesidad de levantar el servidor real.
+// sin necesidad de levantar el servidor real
 const request = require("supertest");
 
-// Importamos la app de Express.
+// Importamos bcrypt para generar el hash dinámico
+const bcrypt = require("bcrypt");
+
+// Importamos la app de Express y la DB
 // NO importamos server.js porque los tests
-// no deben abrir puertos ni arrancar el servidor.
-const app = require("../src/app");
+// no deben abrir puertos ni arrancar el servidor
+const { app, db } = require("../src/app");
 
 // 'describe' agrupa todos los tests relacionados
 // con la ruta /trenes
 describe("Ruta protegida /trenes", () => {
 
+  // 🔹 Antes de cada test limpiamos la tabla de usuarios y creamos uno base
+  beforeEach(async () => {
+    // 🔹 Limpiamos todos los usuarios
+    await db.query("DELETE FROM users");
+
+    // 🔹 Generamos hash dinámico de password '1'
+    const hash = await bcrypt.hash("1", 10);
+
+    // 🔹 Insertamos un usuario base con username '1' y password '1'
+    await db.query(
+      "INSERT INTO users (username, passwordHash) VALUES (?, ?)",
+      ["1", hash]
+    );
+  });
+
   // -----------------------------
   // TEST 1: acceso SIN login
   // -----------------------------
   it("Debe redirigir al login si no hay sesión", async () => {
-
     // Hacemos una petición GET a /trenes
     // sin haber iniciado sesión
     const res = await request(app).get("/trenes");
@@ -56,7 +73,7 @@ describe("Ruta protegida /trenes", () => {
     // 2️⃣ Ahora accedemos a /trenes
     // usando EL MISMO agent (misma sesión)
     const res = await agent.get("/trenes");
-    
+
     // Log final: flujo E2E completo
     console.log("🚆 E2E COMPLETADO - Trenes devueltos:", res.body.length);
 
@@ -66,6 +83,11 @@ describe("Ruta protegida /trenes", () => {
 
     // Comprobamos que la respuesta es JSON
     expect(Array.isArray(res.body)).toBe(true);
+  });
+
+  // 🔹 Cerramos la conexión a la DB al final de todos los tests
+  afterAll(async () => {
+    await db.end();
   });
 
 });
