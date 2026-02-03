@@ -4,7 +4,7 @@ const request = require("supertest");
 
 // Importa la aplicación Express desde el archivo app.js
 // Se usa para poder probar sus endpoints
-const { app } = require("../src/app");
+const app = require("../src/app");
 
 // Describe un conjunto de tests relacionados con la API de autenticación
 describe("Auth API", () => {

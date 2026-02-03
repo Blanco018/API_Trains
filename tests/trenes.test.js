@@ -6,7 +6,7 @@ const request = require("supertest");
 // Importamos la app de Express.
 // NO importamos server.js porque los tests
 // no deben abrir puertos ni arrancar el servidor.
-const { app } = require("../src/app");
+const app = require("../src/app");
 
 // 'describe' agrupa todos los tests relacionados
 // con la ruta /trenes
@@ -66,7 +66,6 @@ describe("Ruta protegida /trenes", () => {
 
     // Comprobamos que la respuesta es JSON
     expect(Array.isArray(res.body)).toBe(true);
-    console.log("El suario");
   });
 
 });

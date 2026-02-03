@@ -52,6 +52,20 @@ app.use(session({
 app.use(express.static(publicPath));
 
 // -----------------------------
+// PARA VER SI FUNCIONA LA API
+// -----------------------------
+
+// Ruta GET para comprobar que la API está viva
+// Se suele usar como health-check
+app.get("/api/status", (req, res) => {
+  // Enviamos una respuesta HTTP con código 200 (OK)
+  // y un JSON con un mensaje informativo
+  res.status(200).json({
+    message: "API Trenes funcionando"
+  });
+});
+
+// -----------------------------
 // REGISTRO E INICIO DE SESIÓN USANDO MYSQL
 // -----------------------------
 
@@ -225,11 +239,7 @@ app.get("/seed-trains", async (req, res) => {
   }
 });
 
-// -----------------------------
-// INICIAR SERVIDOR
-// -----------------------------
-// app.listen(PORT, () => {
-//   console.log(`Servidor funcionando en http://localhost:${PORT}`);
-// });
-
-module.exports = { app };
+//module.exports = {app};
+module.exports = app;
+module.exports.app = app;
+module.exports.db = db; // para MySQL
