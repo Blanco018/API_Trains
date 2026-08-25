@@ -5,7 +5,7 @@
   "main": "API-TREN.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "test": "jest",
+    "test": "jest --runInBand",
     "test:watch": "jest --watch",
     "start": "node src/server.js",
     "dev": "nodemon src/server.js"

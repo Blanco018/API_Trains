@@ -17,8 +17,9 @@ describe("Ruta protegida /trenes", () => {
 
   // 🔹 Antes de cada test limpiamos la tabla de usuarios y creamos uno base
   beforeEach(async () => {
-    // 🔹 Limpiamos todos los usuarios
-    await db.query("DELETE FROM users");
+    // 🔹 CAMBIO: Borramos únicamente el usuario de prueba '1' en lugar de toda la tabla
+    // Esto previene errores de clave duplicada si hay operaciones concurrentes
+    await db.query("DELETE FROM users WHERE username = ?", ["1"]);
 
     // 🔹 Generamos hash dinámico de password '1'
     const hash = await bcrypt.hash("1", 10);
@@ -87,6 +88,8 @@ describe("Ruta protegida /trenes", () => {
 
   // 🔹 Cerramos la conexión a la DB al final de todos los tests
   afterAll(async () => {
+    // 🔹 CAMBIO: Limpiamos el usuario de prueba creado antes de cerrar la conexión
+    await db.query("DELETE FROM users WHERE username = ?", ["1"]);
     await db.end();
   });
 
