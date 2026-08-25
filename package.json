@@ -5,8 +5,10 @@
   "main": "API-TREN.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node API-TREN.js",
-    "dev": "nodemon API-TREN.js"
+    "test": "jest --runInBand",
+    "test:watch": "jest --watch",
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
   },
   "keywords": [],
   "author": "",
@@ -16,7 +18,6 @@
     "bcrypt": "^6.0.0",
     "bcryptjs": "^3.0.3",
     "body-parser": "^2.2.2",
-    "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "express-session": "^1.18.2",
     "mysql2": "^3.16.1"
@@ -30,6 +31,9 @@
   },
   "homepage": "https://github.com/Blanco018/API_Trains#readme",
   "devDependencies": {
-    "nodemon": "^3.1.11"
+    "dotenv": "^17.2.3",
+    "jest": "^30.2.0",
+    "nodemon": "^3.1.11",
+    "supertest": "^7.2.2"
   }
 }
