@@ -1,0 +1,55 @@
+const bcrypt = require("bcrypt");
+const db = require("../config/db"); // Importamos la conexión centralizada a MySQL
+
+// Lógica de Registro
+exports.register = async (req, res) => {
+  const { username, password } = req.body; // Extraemos los datos enviados por el cliente
+  
+  if (!username || !password) return res.status(400).send("Faltan datos");
+
+  try {
+    // 1. Verificamos si el usuario ya existe en la tabla 'users'
+    const [existing] = await db.query("SELECT * FROM users WHERE username = ?", [username]);
+    if (existing.length > 0) return res.send("Usuario ya existe");
+
+    // 2. Encriptamos la contraseña con Bcrypt (costo de 10 rondas de hashing)
+    const hash = await bcrypt.hash(password, 10);
+
+    // 3. Insertamos el usuario con la clave ya encriptada
+    await db.query("INSERT INTO users (username, passwordHash) VALUES (?, ?)", [username, hash]);
+
+    res.send("Usuario creado, ahora puedes iniciar sesión");
+  } catch (error) {
+    res.status(500).json({ ok: false, error: error.message });
+  }
+};
+
+// Lógica de Login
+exports.login = async (req, res) => {
+  const { username, password } = req.body;
+
+  try {
+    // 1. Buscamos al usuario en MySQL
+    const [rows] = await db.query("SELECT * FROM users WHERE username = ?", [username]);
+    if (rows.length === 0) return res.send("Usuario no encontrado");
+
+    const user = rows[0];
+
+    // 2. Comparamos la clave enviada en texto plano con el hash guardado en MySQL
+    const match = await bcrypt.compare(password, user.passwordHash);
+    if (!match) return res.send("Contraseña incorrecta");
+
+    // 3. Guardamos la identidad del usuario en la sesión de Express
+    req.session.user = username;
+    res.redirect("/"); // Redirigimos a la página principal
+  } catch (error) {
+    res.status(500).json({ ok: false, error: error.message });
+  }
+};
+
+// Lógica de Logout
+exports.logout = (req, res) => {
+  // Destruimos la cookie/sesión del usuario activo
+  req.session.destroy();
+  res.redirect("/login");
+};
