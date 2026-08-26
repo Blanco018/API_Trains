@@ -39,12 +39,24 @@ exports.login = async (req, res) => {
     const match = await bcrypt.compare(password, user.passwordHash);
     if (!match) return res.send("Contraseña incorrecta");
 
-    // 3. Guardamos la identidad del usuario en la sesión de Express
-    req.session.user = username;
+    // 3. Guardamos un objeto estructurado en la sesión (NUEVO/CORREGIDO)
+    req.session.user = {
+      id: user.id,
+      username: user.username
+    };
+
     res.redirect("/"); // Redirigimos a la página principal
   } catch (error) {
     res.status(500).json({ ok: false, error: error.message });
   }
+};
+
+// Obtener datos del usuario activo (NUEVO)
+exports.getCurrentUser = (req, res) => {
+  if (req.session && req.session.user) {
+    return res.json({ logged: true, username: req.session.user.username });
+  }
+  res.status(401).json({ logged: false, message: "No hay sesión activa" });
 };
 
 // Lógica de Logout

@@ -2,6 +2,25 @@ const tabla = document.getElementById("tabla-trenes");
 const buscador = document.getElementById("search");
 
 let trenes = [];
+// Cargar el nombre del usuario autenticado
+document.addEventListener("DOMContentLoaded", () => {
+  obtenerUsuarioLogueado();
+});
+
+async function obtenerUsuarioLogueado() {
+  try {
+    const response = await fetch("/api/me");
+    if (response.ok) {
+      const data = await response.json();
+      const userSpan = document.getElementById("username-display");
+      if (userSpan && data.username) {
+        userSpan.textContent = data.username;
+      }
+    }
+  } catch (error) {
+    console.error("Error al obtener el usuario:", error);
+  }
+}
 
 // Cargar datos desde la API
 fetch("/trenes")

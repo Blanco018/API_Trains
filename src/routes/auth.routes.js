@@ -18,4 +18,17 @@ router.get("/login", (req, res) => {
   res.sendFile(path.join(publicPath, "html", "TrenesLogin.html"));
 });
 
+// Obtener los datos del usuario logueado desde la sesión
+router.get("/api/me", (req, res) => {
+  if (req.session && req.session.user) {
+    // Si existe la sesión, devolvemos su nombre (o email)
+    return res.json({ 
+      logged: true, 
+      username: req.session.user.username || req.session.user.nombre || req.session.user.email 
+    });
+  }
+  
+  res.status(401).json({ logged: false, message: "No hay sesión activa" });
+});
+
 module.exports = router;
