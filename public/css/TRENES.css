@@ -127,6 +127,16 @@ th {
 tr:hover {
   background: #c89e9e;
 }
+/* =========================
+   LOGOS DE OPERADORES
+   ========================= */
+.img-logo {
+  max-height: 25px;
+  max-width: 65px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
 
 /* =========================
    FOOTER
