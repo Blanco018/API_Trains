@@ -4,6 +4,7 @@
 const express = require("express");
 const path = require("path");
 const session = require("express-session");
+const MySQLStore = require("express-mysql-session")(session); // <-- Importamos el almacenamiento de sesiones en MySQL
 const bodyParser = require("body-parser");
 require("dotenv").config();
 
@@ -28,11 +29,31 @@ const publicPath = path.join(__dirname, "..", "public");
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// Configuración de sesiones
+// ------------------------------------------
+// Configuración del Store de Sesiones con MySQL / Aiven
+// ------------------------------------------
+const sessionStoreOptions = {
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT || 3306,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  createDatabaseTable: true, // Crea automáticamente la tabla 'sessions' en tu MySQL si no existe
+  ssl: { rejectUnauthorized: false } // Requerido para la conexión SSL segura con Aiven
+};
+
+const sessionStore = new MySQLStore(sessionStoreOptions);
+
+// Configuración de sesiones persistentes
 app.use(session({
+  key: "apitren_session",
   secret: process.env.SESSION_SECRET || "clave-secreta-cualquiercosa",
+  store: sessionStore, // <-- Asignamos la base de datos como almacén
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 // Duración de 1 día
+  }
 }));
 
 // Archivos estáticos
