@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Login / Registro</title>
-  <!-- Usamos tu CSS existente -->
+    <!-- Usamos el CSS existente -->
   <link rel="stylesheet" href="/css/TRENES.css">
   <link rel="icon" type="image/png" href="/img/logoimg/images.png">
 </head>
@@ -17,11 +17,64 @@
     </form>
 
     <h1>Registro</h1>
-    <form action="/register" method="POST" class="form-register">
-      <input type="text" name="usernameRegister" placeholder="Usuario" required>
-      <input type="password" name="passwordRegister" placeholder="Contraseña" required>
+    <!-- Quitamos el action/method para manejarlo con JS -->
+    <form id="formRegister" class="form-register">
+      <input type="text" id="usernameRegister" name="usernameRegister" placeholder="Usuario" required>
+      <input type="password" id="passwordRegister" name="passwordRegister" placeholder="Contraseña" required>
       <button type="submit">Registrarse</button>
     </form>
+
+    <!-- Caja para avisos dinámicos en la misma interfaz -->
+    <div id="registerAlert" style="display:none; margin-top:15px; padding:10px; border-radius:5px; text-align:center;"></div>
   </div>
+
+  <script>
+    document.getElementById('formRegister').addEventListener('submit', async (e) => {
+      e.preventDefault(); // Evitamos que la página recargue o cambie de URL
+      
+      const username = document.getElementById('usernameRegister').value;
+      const password = document.getElementById('passwordRegister').value;
+      const alertBox = document.getElementById('registerAlert');
+
+      try {
+        const response = await fetch('/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ usernameRegister: username, passwordRegister: password })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          // Iniciar sesión automáticamente tras el registro
+          const autoLogin = await fetch('/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ usernameLogIn: username, passwordLogIn: password })
+          });
+
+          if (autoLogin.ok) {
+            alertBox.style.display = 'block';
+            alertBox.style.backgroundColor = '#d4edda';
+            alertBox.style.color = '#155724';
+            alertBox.innerHTML = `
+              <strong>¡Registro e inicio de sesión exitosos! 🎉</strong><br><br>
+              ¿Deseas acceder directamente a la aplicación?<br><br>
+              <button onclick="window.location.href='/'" style="margin-right:10px; cursor:pointer;">Sí, acceder</button>
+              <button onclick="document.getElementById('registerAlert').style.display='none'" style="cursor:pointer;">No, mantenerme aquí</button>
+            `;
+            document.getElementById('formRegister').reset();
+          }
+        } else {
+          alertBox.style.display = 'block';
+          alertBox.style.backgroundColor = '#f8d7da';
+          alertBox.style.color = '#721c24';
+          alertBox.innerText = data.message || 'Error al registrar usuario';
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    });
+  </script>
 </body>
 </html>

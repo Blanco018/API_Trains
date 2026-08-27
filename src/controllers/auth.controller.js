@@ -3,25 +3,26 @@ const db = require("../config/db"); // Importamos la conexión centralizada a My
 
 // Lógica de Registro
 exports.register = async (req, res) => {
-  // Leemos las claves reales enviadas por el formulario de registro
+   // Leemos las claves reales enviadas por el formulario de registro
   const { usernameRegister: username, passwordRegister: password } = req.body; 
   
-  if (!username || !password) return res.status(400).send("Faltan datos");
+  if (!username || !password) {
+    return res.status(400).json({ ok: false, message: "Faltan datos de registro" });
+  }
 
   try {
-    // 1. Verificamos si el usuario ya existe en la tabla 'users'
     const [existing] = await db.query("SELECT * FROM users WHERE username = ?", [username]);
-    if (existing.length > 0) return res.send("Usuario ya existe");
+    if (existing.length > 0) {
+      return res.status(400).json({ ok: false, message: "El usuario ya existe" });
+    }
 
-    // 2. Encriptamos la contraseña con Bcrypt
     const hash = await bcrypt.hash(password, 10);
-
-    // 3. Insertamos el usuario con la clave ya encriptada
     await db.query("INSERT INTO users (username, passwordHash) VALUES (?, ?)", [username, hash]);
 
-    res.send("Usuario creado, ahora puedes iniciar sesión");
+    // Devolvemos JSON en lugar de res.send()
+    res.status(200).json({ ok: true, message: "Usuario creado con éxito" });
   } catch (error) {
-    res.status(500).json({ ok: false, error: error.message });
+    res.status(500).json({ ok: false, message: error.message });
   }
 };
 
