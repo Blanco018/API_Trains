@@ -3,7 +3,8 @@ const db = require("../config/db"); // Importamos la conexión centralizada a My
 
 // Lógica de Registro
 exports.register = async (req, res) => {
-  const { username, password } = req.body; // Extraemos los datos enviados por el cliente
+  // Leemos las claves reales enviadas por el formulario de registro
+  const { usernameRegister: username, passwordRegister: password } = req.body; 
   
   if (!username || !password) return res.status(400).send("Faltan datos");
 
@@ -12,7 +13,7 @@ exports.register = async (req, res) => {
     const [existing] = await db.query("SELECT * FROM users WHERE username = ?", [username]);
     if (existing.length > 0) return res.send("Usuario ya existe");
 
-    // 2. Encriptamos la contraseña con Bcrypt (costo de 10 rondas de hashing)
+    // 2. Encriptamos la contraseña con Bcrypt
     const hash = await bcrypt.hash(password, 10);
 
     // 3. Insertamos el usuario con la clave ya encriptada
@@ -26,7 +27,10 @@ exports.register = async (req, res) => {
 
 // Lógica de Login
 exports.login = async (req, res) => {
-  const { username, password } = req.body;
+  // Leemos las claves reales enviadas por el formulario de login
+  const { usernameLogIn: username, passwordLogIn: password } = req.body;
+
+  if (!username || !password) return res.status(400).send("Faltan datos de inicio de sesión");
 
   try {
     // 1. Buscamos al usuario en MySQL
@@ -35,11 +39,11 @@ exports.login = async (req, res) => {
 
     const user = rows[0];
 
-    // 2. Comparamos la clave enviada en texto plano con el hash guardado en MySQL
+    // 2. Comparamos la clave enviada con el hash guardado en MySQL
     const match = await bcrypt.compare(password, user.passwordHash);
     if (!match) return res.send("Contraseña incorrecta");
 
-    // 3. Guardamos un objeto estructurado en la sesión (NUEVO/CORREGIDO)
+    // 3. Guardamos la sesión
     req.session.user = {
       id: user.id,
       username: user.username
@@ -51,7 +55,7 @@ exports.login = async (req, res) => {
   }
 };
 
-// Obtener datos del usuario activo (NUEVO)
+// Obtener datos del usuario activo
 exports.getCurrentUser = (req, res) => {
   if (req.session && req.session.user) {
     return res.json({ logged: true, username: req.session.user.username });
