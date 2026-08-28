@@ -11,7 +11,7 @@ body {
   /* Imagen de fondo con capa clara superpuesta para suavizar la intensidad */
   background-image: 
     linear-gradient(rgba(240, 242, 245, 0.82), rgba(240, 242, 245, 0.82)),
-    url('/img/logoimg/images.png'); /* Revisa que la ruta coincida con la imagen del tren guardada */
+    url('public/img/background_login.jpg'); /* Revisa que la ruta coincida con la imagen del tren guardada */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -249,9 +249,7 @@ footer {
   font-size: 14px;
   color: #666;
 }
-
-<<<<<<< Updated upstream
-=======
+ 
 /* ==========================================
    MODAL POP-UP ELEGANTE
    ========================================== */
@@ -368,7 +366,6 @@ footer {
   }
 }
 
->>>>>>> Stashed changes
 /* =========================
    RESPONSIVE
    ========================= */
