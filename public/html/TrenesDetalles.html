@@ -4,15 +4,28 @@
   <meta charset="UTF-8">
   <title>Detalle del Tren</title>
   <link rel="stylesheet" href="/css/TRENES.css">
+<link rel="icon" type="image/png" href="/img/logoimg/images.png">
 </head>
 <body class="body-detalle">
 
   <div class="pagina-detalle-container">
     <!-- Barra Superior -->
-    <header class="header-detalle">
-      <span class="header-user-text">Usuario: <strong id="userNombre">Cargando...</strong></span>
-      <a href="/" class="btn-cerrar-pagina">CERRAR</a>
-    </header>
+<header>
+  <!-- Bloque 1 (Izquierda): Saludo del usuario autenticado -->
+  <div class="header-user">
+    Hola de nuevo, <span id="username-display">...</span>
+  </div>
+
+  <!-- Bloque 2 (Centro): Título de la vista -->
+  <div class="header-center">
+    <h1>DETALLE DEL TREN</h1>
+  </div>
+
+  <!-- Bloque 3 (Derecha): Botón CERRAR idéntico al del index -->
+  <div class="header-action">
+    <a href="/" class="btn-logout">CERRAR</a>
+  </div>
+</header>
 
     <!-- Contenido Principal (2 Columnas) -->
     <main class="cuerpo-detalle">
