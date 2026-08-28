@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Login / Registro</title>
-    <!-- Usamos el CSS existente -->
+  <!-- CSS existente -->
   <link rel="stylesheet" href="/css/TRENES.css">
   <link rel="icon" type="image/png" href="/img/logoimg/images.png">
 </head>
@@ -17,24 +17,37 @@
     </form>
 
     <h1>Registro</h1>
-    <!-- Quitamos el action/method para manejarlo con JS -->
     <form id="formRegister" class="form-register">
       <input type="text" id="usernameRegister" name="usernameRegister" placeholder="Usuario" required>
       <input type="password" id="passwordRegister" name="passwordRegister" placeholder="Contraseña" required>
       <button type="submit">Registrarse</button>
     </form>
+  </div>
 
-    <!-- Caja para avisos dinámicos en la misma interfaz -->
-    <div id="registerAlert" style="display:none; margin-top:15px; padding:10px; border-radius:5px; text-align:center;"></div>
+  <!-- MODAL POP-UP -->
+  <div id="modalSuccess" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-icon">🎉</div>
+      <h2>¡Registro e inicio de sesión exitosos!</h2>
+      <p>¿Deseas acceder directamente a la aplicación?</p>
+      <div class="modal-actions">
+        <button id="btnModalYes" class="btn-modal-yes">Sí, acceder</button>
+        <button id="btnModalNo" class="btn-modal-no">No, mantenerme aquí</button>
+      </div>
+    </div>
   </div>
 
   <script>
-    document.getElementById('formRegister').addEventListener('submit', async (e) => {
-      e.preventDefault(); // Evitamos que la página recargue o cambie de URL
+    const formRegister = document.getElementById('formRegister');
+    const modalSuccess = document.getElementById('modalSuccess');
+    const btnModalYes = document.getElementById('btnModalYes');
+    const btnModalNo = document.getElementById('btnModalNo');
+
+    formRegister.addEventListener('submit', async (e) => {
+      e.preventDefault();
       
       const username = document.getElementById('usernameRegister').value;
       const password = document.getElementById('passwordRegister').value;
-      const alertBox = document.getElementById('registerAlert');
 
       try {
         const response = await fetch('/register', {
@@ -46,7 +59,6 @@
         const data = await response.json();
 
         if (response.ok) {
-          // Iniciar sesión automáticamente tras el registro
           const autoLogin = await fetch('/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -54,26 +66,25 @@
           });
 
           if (autoLogin.ok) {
-            alertBox.style.display = 'block';
-            alertBox.style.backgroundColor = '#d4edda';
-            alertBox.style.color = '#155724';
-            alertBox.innerHTML = `
-              <strong>¡Registro e inicio de sesión exitosos! 🎉</strong><br><br>
-              ¿Deseas acceder directamente a la aplicación?<br><br>
-              <button onclick="window.location.href='/'" style="margin-right:10px; cursor:pointer;">Sí, acceder</button>
-              <button onclick="document.getElementById('registerAlert').style.display='none'" style="cursor:pointer;">No, mantenerme aquí</button>
-            `;
-            document.getElementById('formRegister').reset();
+            formRegister.reset();
+            // Mostrar modal quitando la clase 'hidden'
+            modalSuccess.classList.remove('hidden');
           }
         } else {
-          alertBox.style.display = 'block';
-          alertBox.style.backgroundColor = '#f8d7da';
-          alertBox.style.color = '#721c24';
-          alertBox.innerText = data.message || 'Error al registrar usuario';
+          alert(data.message || 'Error al registrar usuario');
         }
       } catch (err) {
         console.error(err);
       }
+    });
+
+    // Eventos de los botones del modal
+    btnModalYes.addEventListener('click', () => {
+      window.location.href = '/';
+    });
+
+    btnModalNo.addEventListener('click', () => {
+      modalSuccess.classList.add('hidden');
     });
   </script>
 </body>
