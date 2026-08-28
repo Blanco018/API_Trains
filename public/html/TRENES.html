@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Trenes de España</title>
+  <!-- (NUEVO) Favicon para la pestaña del navegador -->
+  <link rel="icon" type="image/png" href="/img/logoimg/images.png">
+  <link rel="stylesheet" href="/css/TRENES.css">
+</head>
+<body>
+
+  <!-- Header maquetado en 3 columnas simétricas -->
+  <header class="main-header">
+    <!-- Bloque 1 (Izquierda): Saludo al usuario autenticado -->
+    <div class="header-user">
+      Hola de nuevo, <span id="username-display">...</span>
+    </div>
+    
+    <!-- Bloque 2 (Centro): Títulos principales del proyecto (CORREGIDO: usa header-center) -->
+    <div class="header-center">
+      <h1>🚆 TRENES DE ESPAÑA 🚆</h1>
+      <p class="header-subtitle">BUSCADOR DE MODELOS FERROVIARIOS</p>
+    </div>
+
+    <!-- Bloque 3 (Derecha): Enlace de Logout (CORREGIDO: usa header-action) -->
+    <div class="header-action">
+      <a href="/logout" class="btn-logout">Cerrar sesión</a>
+    </div>
+  </header>
+
+  <section class="buscador">
+    <input type="text" id="search" placeholder="Buscar por serie, apodo u operador...">
+  </section>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Serie</th>
+        <th>Apodo</th>
+        <th>Tipo</th>
+        <th>Servicio</th>
+        <th>Operador</th>
+        <th>Dónde circula</th>
+        <th>Logo</th>
+        <th>Descripción</th>
+      </tr>
+    </thead>
+    <tbody id="tabla-trenes">
+      <!-- JS mete los datos aquí -->
+    </tbody>
+  </table>
+
+  <footer>
+    <p>Datos servidos por una API en Node.js + Express</p>
+  </footer>
+
+  <script src="/js/TRENES.js"></script>
+</body>
+</html>
