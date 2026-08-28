@@ -62,7 +62,7 @@ function pintarTabla(lista) {
 
     // Redirección a la vista de detalle pasando el ID por parámetro URL
     fila.addEventListener("click", () => {
-      window.location.href = `/TrenesDetalles.html?id=${t.id}`;
+      window.location.href = `/html/TrenesDetalles.html?id=${t.id}`;
     });
 
     tabla.appendChild(fila);
