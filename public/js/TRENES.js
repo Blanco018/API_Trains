@@ -32,14 +32,19 @@ fetch("/trenes")
     pintarTabla(trenes);
   });
 
-// Renderizar la tabla dinámica con logos y datos
+// Renderizar la tabla dinámica con logos, datos y redirección
 function pintarTabla(lista) {
   tabla.innerHTML = "";
 
   lista.forEach(t => {
     const fila = document.createElement("tr");
 
-    // (NUEVO) Generamos la etiqueta <img> si viene una ruta de imagen en t.logo
+    // Guardamos el ID del tren en el dataset de la fila
+    fila.dataset.id = t.id;
+    fila.style.cursor = "pointer";
+    fila.title = "Haz clic para ver detalles del tren";
+
+    // Generamos la etiqueta <img> si viene una ruta de imagen en t.logo
     const logoHTML = t.logo 
       ? `<img src="${t.logo}" alt="Logo ${t.operador}" class="img-logo">`
       : '<span>-</span>';
@@ -55,6 +60,11 @@ function pintarTabla(lista) {
       <td>${t.descripcionVisual}</td>
     `;
 
+    // Redirección a la vista de detalle pasando el ID por parámetro URL
+    fila.addEventListener("click", () => {
+      window.location.href = `/detalle.html?id=${t.id}`;
+    });
+
     tabla.appendChild(fila);
   });
 }
@@ -65,7 +75,7 @@ buscador.addEventListener("input", e => {
 
   const filtrados = trenes.filter(t =>
     t.serie.toLowerCase().includes(texto) ||
-    t.apodo.toLowerCase().includes(texto) ||
+    (t.apodo && t.apodo.toLowerCase().includes(texto)) ||
     t.operador.toLowerCase().includes(texto)
   );
 

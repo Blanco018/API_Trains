@@ -149,6 +149,117 @@ tr:hover {
   margin: 0 auto;
 }
 
+/* ==========================================
+   MODAL DETALLE DE TREN (SEGÚN CROQUIS)
+   ========================================== */
+
+/* Tarjeta principal más ancha */
+.modal-tren-card {
+  background: #ffffff;
+  width: 90%;
+  max-width: 850px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Barra superior */
+.modal-tren-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #e7482f;
+  color: white;
+  padding: 12px 20px;
+}
+
+.btn-cerrar-modal {
+  background: transparent;
+  border: 1px solid white;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: auto;
+  font-weight: bold;
+}
+
+.btn-cerrar-modal:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+/* Disposición en 2 columnas */
+.modal-tren-body {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Columna Izquierda */
+.col-izquierda {
+  display: flex;
+  flex-direction: column;
+}
+
+.titulo-tren {
+  margin: 0 0 10px 0;
+  padding: 10px;
+  border: 2px solid #333;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 1.4rem;
+}
+
+.contenedor-img-tren {
+  border: 2px solid #333;
+  border-radius: 12px;
+  overflow: hidden;
+  height: 280px;
+}
+
+.contenedor-img-tren img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Columna Derecha */
+.col-derecha {
+  display: flex;
+  flex-direction: column;
+}
+
+.col-derecha h3 {
+  margin: 0 0 8px 0;
+}
+
+.caja-descripcion {
+  border: 2px solid #333;
+  border-radius: 12px;
+  padding: 15px;
+  flex-grow: 1;
+  background: #fafafa;
+  overflow-y: auto;
+}
+
+.btn-accion-tren {
+  margin-top: 15px;
+  background-color: #641b0f;
+  color: white;
+  border-radius: 6px;
+  padding: 10px;
+  font-weight: bold;
+}
+
+/* Ajuste Móvil */
+@media (max-width: 700px) {
+  .modal-tren-body {
+    grid-template-columns: 1fr;
+  }
+}
 /* =========================
    FOOTER
    ========================= */
