@@ -57,3 +57,20 @@ exports.seedTrenes = async (req, res) => {
     res.status(500).json({ ok: false, error: error.message });
   }
 };
+// Obtener un único tren por su ID para la pantalla de detalle
+exports.getTrenPorId = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const [rows] = await db.query("SELECT * FROM trains WHERE id = ?", [id]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ ok: false, message: "Tren no encontrado" });
+    }
+
+    // Devolvemos directamente el objeto del tren
+    res.json(rows[0]);
+  } catch (error) {
+    res.status(500).json({ ok: false, error: error.message });
+  }
+};
