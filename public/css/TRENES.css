@@ -254,6 +254,82 @@ tr:hover {
   font-weight: bold;
 }
 
+/* ==========================================
+   🔐 VISTA DETALLE TREN (TARJETA CENTRADA)
+   ========================================== */
+
+/* Contenedor principal que centra la tarjeta flotante en pantalla */
+.contenedor-principal-detalle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  box-sizing: border-box;
+  min-height: calc(100vh - 90px);
+}
+
+/* Tarjeta contenedora blanca con sombra */
+.card-detalle {
+  background: #ffffff;
+  width: 100%;
+  max-width: 850px;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  align-items: stretch;
+}
+
+/* Centrado y límites de la caja de imagen */
+.contenedor-img-tren {
+  border: 2px solid #333;
+  border-radius: 12px;
+  width: 100%;
+  height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 15px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Evita que el logo o la imagen del tren se deformen o estiren */
+.contenedor-img-tren img {
+  max-width: 85%;
+  max-height: 85%;
+  object-fit: contain;
+}
+
+/* Botón de retorno al listado */
+.btn-volver-listado {
+  margin-top: 15px;
+  background-color: #4CAF50;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  display: block;
+  transition: background-color 0.2s ease;
+}
+
+.btn-volver-listado:hover {
+  background-color: #45a049;
+}
+
+/* Adaptación para pantallas móviles */
+@media (max-width: 700px) {
+  .card-detalle {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
 /* Ajuste Móvil */
 @media (max-width: 700px) {
   .modal-tren-body {
