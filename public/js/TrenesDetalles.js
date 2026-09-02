@@ -55,21 +55,24 @@ class DetalleTren {
     }
   }
 
-  render(tren) {
-    // Mapeo de propiedades que devuelva tu API (serie, apodo, imagen/logo, etc.)
-    if (this.elNombre) {
-      this.elNombre.textContent = tren.serie ? `Serie ${tren.serie}` : (tren.nombre || 'Tren sin nombre');
-    }
-    
-    if (this.elImg) {
-      this.elImg.src = tren.imagen || tren.logo || '/img/logoimg/images.png';
-      this.elImg.alt = `Imagen de ${tren.serie || 'Tren'}`;
-    }
-
-    if (this.elDesc) {
-      this.elDesc.textContent = tren.descripcionVisual || tren.descripcion || 'Sin descripción disponible.';
-    }
+render(tren) {
+  // Mapeo del título del tren
+  if (this.elNombre) {
+    this.elNombre.textContent = tren.serie ? `SERIE ${tren.serie}` : (tren.nombre || 'Tren sin nombre');
   }
+  
+  // 👈 ASIGNACIÓN DE LA IMAGEN DEL MODELO
+  if (this.elImg) {
+    // Prioriza imagen_modelo, luego cae en imagen/logo y por último en el placeholder por defecto
+    this.elImg.src = tren.imagen_modelo || tren.imagen || tren.logo || '/img/cargando/03-42-05-37_512.gif';
+    this.elImg.alt = `Fotografía de ${tren.serie || 'Tren'}`;
+  }
+
+  // Mapeo de la descripción
+  if (this.elDesc) {
+    this.elDesc.textContent = tren.descripcionVisual || tren.descripcion || 'Sin descripción disponible.';
+  }
+}
 }
 
 // Inicializar al cargar el DOM

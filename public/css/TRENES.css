@@ -24,24 +24,6 @@ input {
   padding: 0.5rem;
 }
 
-button { 
-  width: 100%; 
-  padding: 0.5rem; 
-  background-color: #4CAF50; 
-  color: white; 
-  border: none; 
-  border-radius: 4px; 
-  cursor: pointer; 
-}
-
-button:hover { 
-  background-color: #45a049; 
-}
-
-form { 
-  margin-bottom: 2rem; 
-}
-
 /* =========================
    HEADER (CENTRADOS EXACTOS CON GRID)
    ========================= */
@@ -232,8 +214,8 @@ tr:hover {
   flex-direction: column;
 }
 
-.col-derecha h3 {
-  margin: 0 0 8px 0;
+.col-derecha h2 {
+  margin-left: 30%; 
 }
 
 .caja-descripcion {
@@ -241,7 +223,7 @@ tr:hover {
   border-radius: 12px;
   padding: 15px;
   flex-grow: 1;
-  background: #fafafa;
+  background: rgb(248, 229, 229);
   overflow-y: auto;
 }
 
@@ -270,7 +252,7 @@ tr:hover {
 
 /* Tarjeta contenedora blanca con sombra */
 .card-detalle {
-  background: #ffffff;
+  background: rgb(248, 229, 229);
   width: 100%;
   max-width: 850px;
   border-radius: 12px;
@@ -282,32 +264,30 @@ tr:hover {
   align-items: stretch;
 }
 
-/* Centrado y límites de la caja de imagen */
+/* 1. Asegurar que el contenedor ocupe todo el alto disponible dentro del marco */
 .contenedor-img-tren {
-  border: 2px solid #333;
-  border-radius: 12px;
   width: 100%;
-  height: 250px;
+  height: 220px; /* Define una altura fija acorde a la columna izquierda */
   display: flex;
-  justify-content: center;
   align-items: center;
-  background-color: #ffffff;
-  padding: 15px;
+  justify-content: center;
+  padding: 8px; /* Espaciado interno opcional */
   box-sizing: border-box;
-  overflow: hidden;
 }
 
-/* Evita que el logo o la imagen del tren se deformen o estiren */
-.contenedor-img-tren img {
-  max-width: 85%;
-  max-height: 85%;
-  object-fit: contain;
+/* 2. Forzar a la imagen a rellenar el espacio sin deformarse */
+.contenedor-img-tren img, 
+#imgTren {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important; /* "cover" llena todo el recuadro; usa "contain" si prefieres no recortar nada */
+  border-radius: 6px; /* Para que encaje bien en el borde negro */
 }
 
 /* Botón de retorno al listado */
 .btn-volver-listado {
   margin-top: 15px;
-  background-color: #4CAF50;
+  background-color: #a0190d;
   color: white;
   text-decoration: none;
   text-align: center;
@@ -319,7 +299,7 @@ tr:hover {
 }
 
 .btn-volver-listado:hover {
-  background-color: #45a049;
+  background-color: #560b0b;
 }
 
 /* Adaptación para pantallas móviles */
