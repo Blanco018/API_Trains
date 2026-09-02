@@ -4,61 +4,54 @@
   <meta charset="UTF-8">
   <title>Detalle del Tren</title>
   <link rel="stylesheet" href="/css/TRENES.css">
-<link rel="icon" type="image/png" href="/img/logoimg/images.png">
+  <link rel="icon" type="image/png" href="/img/logoimg/images.png">
 </head>
 <body class="body-detalle">
 
   <div class="pagina-detalle-container">
     <!-- Barra Superior -->
-<header>
-  <!-- Bloque 1 (Izquierda): Saludo del usuario autenticado -->
-  <div class="header-user">
-    -- <span id="username-display"> --</span>
-  </div>
+    <header>
+      <!-- Bloque 1 (Izquierda): Saludo del usuario autenticado -->
+      <div class="header-user">
+        Hola de nuevo, <span id="username-display">...</span>
+      </div>
 
-  <!-- Bloque 2 (Centro): Título de la vista -->
-  <div class="header-center">
-    <h1>DETALLE DEL TREN</h1>
-  </div>
+      <!-- Bloque 2 (Centro): Título de la vista -->
+      <div class="header-center">
+        <h1>DETALLE DEL TREN</h1>
+      </div>
 
-  <!-- Bloque 3 (Derecha): Botón CERRAR idéntico al del index -->
-  <div class="header-action">
-    <a href="/" class="btn-logout">CERRAR</a>
-  </div>
-</header>
+      <!-- Bloque 3 (Derecha): Botón CERRAR -->
+      <div class="header-action">
+        <a href="/login" class="btn-logout">CERRAR SESIÓN</a>
+      </div>
+    </header>
 
-    <!-- Contenido Principal (2 Columnas) -->
-    <main class="cuerpo-detalle">
-      <!-- Columna Izquierda -->
-      <section class="col-izquierda">
-        <h1 id="nombreTren" class="caja-titulo">NOMBRE TREN</h1>
-        <div class="caja-imagen">
-          <img id="imgTren" src="/img/logoimg/images.png" alt="Foto del tren">
-        </div>
-      </section>
+    <!-- Contenido Principal Centrado -->
+    <main class="contenedor-principal-detalle">
+      <div class="card-detalle">
+        
+        <!-- Columna Izquierda -->
+        <section class="col-izquierda">
+          <h1 id="nombreTren" class="titulo-tren">NOMBRE TREN</h1>
+          <div class="contenedor-img-tren">
+            <img id="imgTren" src="/img/cargando/ekkant-grey-20064.gif" alt="Foto del tren">
+          </div>
+        </section>
 
-      <!-- Columna Derecha -->
-      <section class="col-derecha">
-        <h2>DESCRIPCIÓN</h2>
-        <div class="caja-descripcion">
-          <p id="descTren">Cargando información técnica y detalles del tren...</p>
-        </div>
-        <button id="btnAccion" class="btn-accion-detalle">Ver Galería Completa</button>
-      </section>
+        <!-- Columna Derecha -->
+        <section class="col-derecha">
+          <h2>DESCRIPCIÓN</h2>
+          <div class="caja-descripcion">
+            <p id="descTren">Cargando información técnica y detalles del tren...</p>
+          </div>
+          <a href="/" class="btn-volver-listado">← Volver al listado</a>
+        </section>
+
+      </div>
     </main>
   </div>
 
-  <script>
-    // Obtener el ID que viene en la URL (ej: /detalle.html?id=2)
-    const params = new URLSearchParams(window.location.search);
-    const idTren = params.get('id');
-
-    // Aquí harías la petición al backend para cargar los datos de este tren
-    if (idTren) {
-      console.log('Cargando tren con ID:', idTren);
-      // fetch(`/api/trenes/${idTren}`)....
-    }   
-  </script>
   <script src="/js/TrenesDetalles.js"></script>
 </body>
 </html>
