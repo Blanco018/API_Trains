@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Detalle del Tren</title>
+  <link rel="stylesheet" href="/css/TRENES.css">
+  <link rel="icon" type="image/png" href="/img/logoimg/images.png">
+</head>
+<body class="body-detalle">
+
+  <div class="pagina-detalle-container">
+    <!-- Barra Superior -->
+    <header>
+      <!-- Bloque 1 (Izquierda): Saludo del usuario autenticado -->
+      <div class="header-user">
+        Hola de nuevo, <span id="username-display">...</span>
+      </div>
+
+      <!-- Bloque 2 (Centro): Título de la vista -->
+      <div class="header-center">
+        <h1>DETALLE DEL TREN</h1>
+      </div>
+
+      <!-- Bloque 3 (Derecha): Botón CERRAR -->
+      <div class="header-action">
+        <a href="/login" class="btn-logout">CERRAR SESIÓN</a>
+      </div>
+    </header>
+
+    <!-- Contenido Principal Centrado -->
+    <main class="contenedor-principal-detalle">
+      <div class="card-detalle">
+        
+        <!-- Columna Izquierda -->
+        <section class="col-izquierda">
+          <h1 id="nombreTren" class="titulo-tren">NOMBRE TREN</h1>
+          <div class="contenedor-img-tren">
+            <img id="imgTren" src="/img/cargando/ekkant-grey-20064.gif" alt="Foto del tren">
+          </div>
+        </section>
+
+        <!-- Columna Derecha -->
+        <section class="col-derecha">
+          <h2>DESCRIPCIÓN</h2>
+          <div class="caja-descripcion">
+            <p id="descTren">Cargando información técnica y detalles del tren...</p>
+          </div>
+          <a href="/" class="btn-volver-listado">← Volver al listado</a>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="/js/TrenesDetalles.js"></script>
+</body>
+</html>
