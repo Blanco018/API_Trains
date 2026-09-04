@@ -1,0 +1,123 @@
+/* ==========================================
+   1. IMPORTACIONES DE MÓDULOS (Siempre al inicio)
+   ========================================== */
+ @import url('./vistas/login.css');
+ @import url('./vistas/listado.css');
+ @import url('./vistas/detalles.css');
+
+/* =========================
+   ESTILOS GENERALES
+   ========================= */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  color: #333;
+
+  /* Imagen de fondo con capa clara superpuesta para suavizar la intensidad */
+  background-image: 
+    linear-gradient(rgba(240, 242, 245, 0.82), rgba(240, 242, 245, 0.82)),
+    url('/img/background_login.jpg'); /* Revisa que la ruta coincida con la imagen del tren guardada */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+input { 
+  width: 100%; 
+  margin-bottom: 0.5rem; 
+  padding: 0.5rem;
+}
+
+/* =========================
+   HEADER (CENTRADOS EXACTOS CON GRID)
+   ========================= */
+header {
+  background: #e7482f;
+  color: white;
+  padding: 1rem 2rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Columna Izquierda: Saludo en el borde izquierdo */
+.header-user {
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.header-user span {
+  font-weight: 700;
+}
+
+.header-user2{
+  text-align: center;
+}
+
+/* Columna Central: Títulos centrados en la pantalla */
+.header-center {
+  text-align: center;
+}
+
+.header-center h1 {
+  margin: 0 !important;
+  font-size: 1.8rem;
+  text-align: center;
+}
+
+.header-center p {
+  margin: 0.3rem 0 0 0;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+}
+
+/* Columna Derecha: Botón fijado a la derecha */
+.header-action {
+  text-align: right;
+  white-space: nowrap;
+}
+
+h1 { 
+  text-align: center; 
+  margin-bottom: 1rem; 
+}
+
+/* =========================
+   FOOTER
+   ========================= */
+footer {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #666;
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+@media (max-width: 600px) {
+  header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .header-user, .header-action {
+    text-align: center;
+  }
+
+  .container-login {
+    margin: 30px 15px;
+    padding: 20px;
+  }
+
+  table {
+    font-size: 14px;
+  }
+}
