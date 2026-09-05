@@ -1,12 +1,13 @@
 /* ==========================================
    ESTILOS DE LA VISTA DE PERFIL 
    ========================================== */
+
 /* Ajuste de maquetación del Header para evitar cortes */
 .main-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 30px; /* Padding adecuado a los lados */
+  padding: 15px 30px;
   box-sizing: border-box;
   width: 100%;
 }
@@ -16,11 +17,10 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 15px; /* Espaciado entre la campana y el botón de logout */
-  white-space: nowrap; /* Evita que el texto del botón se parta o desborde */
+  gap: 15px;
+  white-space: nowrap;
 }
 
-/* Asegurar que el botón no pierda su margen ni se salga */
 .btn-logout {
   white-space: nowrap;
   padding: 8px 18px;
@@ -43,7 +43,7 @@ html, body {
   text-transform: uppercase;
   letter-spacing: 1.5px;
   font-weight: bold;
-  color: #ffd700; /* Color dorado para destacar */
+  color: #ffd700;
 }
 
 /* Botón e Icono de Notificaciones */
@@ -178,6 +178,7 @@ html, body {
   font-style: italic;
   margin-top: 15px;
 }
+
 /* Botón Volver al Inicio en el Header */
 .btn-volver-inicio {
   display: inline-block;
@@ -197,6 +198,155 @@ html, body {
   color: #b41414;
   border-color: #ffffff;
 }
+
+/* ==========================================
+   GALERÍA Y TARJETAS DE CAPTURAS (PERFIL)
+   ========================================== */
+
+/* Cuadrícula de la galería */
+.galeria-capturas {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+  margin-top: 25px;
+}
+
+/* Tarjeta de captura */
+.card-captura {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-captura:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+}
+
+/* Imagen del tren */
+.card-captura img {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+  background-color: #f4f4f4;
+  border-bottom: 2px solid #eaeaea;
+  display: block;
+}
+
+/* Bloque blanco con texto a la izquierda y menú a la derecha */
+.card-captura-info {
+  padding: 12px 16px;
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  background-color: #ffffff;
+  position: relative;
+}
+
+/* Contenido de texto */
+.card-info-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.card-info-content h4 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #1a1a1a;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.card-info-content p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+/* Menú de tres puntos a la derecha */
+.card-options-menu {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.btn-menu-options {
+  background: transparent;
+  border: none;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #555;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  line-height: 1;
+  transition: background-color 0.2s ease;
+}
+
+.btn-menu-options:hover {
+  background-color: #f0f0f0;
+  color: #000;
+}
+
+/* Menú desplegable emergente hacia arriba */
+.options-dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  margin-bottom: 6px;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 20;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.options-dropdown.show {
+  display: block;
+}
+
+/* Estilo para cada ítem de opción del menú desplegable */
+.btn-option-item {
+  width: 100%;
+  padding: 10px 14px;
+  border: none;
+  background: transparent;
+  color: #333;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-option-item:hover {
+  background-color: #f5f5f5;
+}
+
+/* Botón de eliminar con distinción roja */
+.btn-option-item.btn-delete {
+  color: #d9534f;
+  border-top: 1px solid #eee;
+}
+
+.btn-option-item.btn-delete:hover {
+  background-color: #ffe6e6;
+}
+
 /* ==========================================
    ADAPTACIÓN RESPONSIVA PARA MÓVILES (<= 768px)
    ========================================== */
@@ -245,7 +395,7 @@ html, body {
   .perfil-tabs-nav {
     flex-direction: row;
     justify-content: flex-start;
-    overflow-x: auto; /* Permite deslizar si no caben las pestañas */
+    overflow-x: auto;
     white-space: nowrap;
     padding: 8px 5px;
     -webkit-overflow-scrolling: touch;
@@ -254,7 +404,7 @@ html, body {
   .tab-btn {
     padding: 8px 12px;
     font-size: 0.9rem;
-    flex-shrink: 0; /* Evita que las pestañas se aplasten */
+    flex-shrink: 0;
   }
 
   /* 3. Ajuste del Contenido Principal */

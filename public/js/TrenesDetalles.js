@@ -7,7 +7,8 @@ class DetalleTren {
     this.elNombre = document.getElementById('nombreTren');
     this.elImg = document.getElementById('imgTren');
     this.elDesc = document.getElementById('descTren');
-    this.elUser = document.getElementById('username-display'); // Coincide con el id del HTML
+    this.elUser = document.getElementById('username-display');
+    this.btnCapturar = document.getElementById('btn-capturar-tren'); // Botón de captura
   }
 
   async init() {
@@ -20,7 +21,10 @@ class DetalleTren {
       if (this.elNombre) this.elNombre.textContent = 'Tren no especificado';
       return;
     }
+
     await this.cargarDetalles();
+    await this.comprobarEstadoCaptura();
+    this.escucharEventoCaptura();
   }
 
   async obtenerUsuarioLogueado() {
@@ -55,27 +59,70 @@ class DetalleTren {
     }
   }
 
-render(tren) {
-  // Mapeo del título del tren
-  if (this.elNombre) {
-    this.elNombre.textContent = tren.serie ? `SERIE ${tren.serie}` : (tren.nombre || 'Tren sin nombre');
-  }
-  
-  // 👈 ASIGNACIÓN DE LA IMAGEN DEL MODELO
-  if (this.elImg) {
-    // Prioriza imagen_modelo, luego cae en imagen/logo y por último en el placeholder por defecto
-    this.elImg.src = tren.imagen_modelo || tren.imagen || tren.logo || '/img/cargando/03-42-05-37_512.gif';
-    this.elImg.alt = `Fotografía de ${tren.serie || 'Tren'}`;
+  render(tren) {
+    if (this.elNombre) {
+      this.elNombre.textContent = tren.serie ? `SERIE ${tren.serie}` : (tren.nombre || 'Tren sin nombre');
+    }
+    
+    if (this.elImg) {
+      this.elImg.src = tren.imagen_modelo || tren.imagen || tren.logo || '/img/cargando/03-42-05-37_512.gif';
+      this.elImg.alt = `Fotografía de ${tren.serie || 'Tren'}`;
+    }
+
+    if (this.elDesc) {
+      this.elDesc.textContent = tren.descripcionVisual || tren.descripcion || 'Sin descripción disponible.';
+    }
   }
 
-  // Mapeo de la descripción
-  if (this.elDesc) {
-    this.elDesc.textContent = tren.descripcionVisual || tren.descripcion || 'Sin descripción disponible.';
+  // --- MÉTODOS DE CAPTURA ---
+
+  async comprobarEstadoCaptura() {
+    if (!this.btnCapturar || !this.idTren) return;
+    try {
+      const res = await fetch(`/api/capturas/estado/${this.idTren}`);
+      const data = await res.json();
+      if (data.capturado) {
+        this.actualizarBotonCaptura(true);
+      }
+    } catch (err) {
+      console.error('Error al comprobar estado de la captura:', err);
+    }
+  }
+
+  escucharEventoCaptura() {
+    if (!this.btnCapturar || !this.idTren) return;
+
+    this.btnCapturar.addEventListener('click', async () => {
+      try {
+        const res = await fetch('/api/capturas/toggle', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ trenId: this.idTren })
+        });
+        const data = await res.json();
+
+        if (data.ok) {
+          this.actualizarBotonCaptura(data.capturado);
+        } else {
+          alert(data.message || 'Error al procesar la captura');
+        }
+      } catch (err) {
+        console.error('Error al cambiar la captura:', err);
+      }
+    });
+  }
+
+  actualizarBotonCaptura(capturado) {
+    if (capturado) {
+      this.btnCapturar.textContent = '📸 ¡Capturado!';
+      this.btnCapturar.classList.add('btn-capturado');
+    } else {
+      this.btnCapturar.textContent = '➕ Añadir a mis Capturas';
+      this.btnCapturar.classList.remove('btn-capturado');
+    }
   }
 }
-}
 
-// Inicializar al cargar el DOM
 document.addEventListener('DOMContentLoaded', () => {
   const vistaDetalle = new DetalleTren();
   vistaDetalle.init();
