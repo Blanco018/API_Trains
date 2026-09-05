@@ -4,7 +4,7 @@
 const express = require("express");
 const path = require("path");
 const session = require("express-session");
-const MySQLStore = require("express-mysql-session")(session); // <-- Importamos el almacenamiento de sesiones en MySQL
+const MySQLStore = require("express-mysql-session")(session); // Almacenamiento de sesiones en MySQL
 const bodyParser = require("body-parser");
 require("dotenv").config();
 
@@ -15,10 +15,10 @@ require("dotenv").config();
 const db = require("./config/db");
 const authMiddleware = require("./middlewares/auth.middleware");
 
-// Importamos las rutas que aislamos en la carpeta /routes
+// Importamos las rutas desde /routes
 const authRoutes = require("./routes/auth.routes");
 const trenesRoutes = require("./routes/trenes.routes");
-const capturasRoutes = require("./routes/capturas.routes"); // <-- Módulo de capturas integrado
+const capturasRoutes = require("./routes/capturas.routes");
 
 // ==========================================
 // 3. INICIALIZACIÓN Y CONFIGURACIÓN
@@ -35,12 +35,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // ------------------------------------------
 const sessionStoreOptions = {
   host: process.env.DB_HOST,
-  port: Number(process.env.DB_PORT) || 24373, // <-- Convertido a número explícitamente para evitar fallos de puerto por defecto
+  port: Number(process.env.DB_PORT) || 24373,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  createDatabaseTable: true, // Crea automáticamente la tabla 'sessions' en tu MySQL si no existe
-  ssl: { rejectUnauthorized: false } // Requerido para la conexión SSL segura con Aiven
+  createDatabaseTable: true,
+  ssl: { rejectUnauthorized: false }
 };
 
 const sessionStore = new MySQLStore(sessionStoreOptions);
@@ -49,7 +49,7 @@ const sessionStore = new MySQLStore(sessionStoreOptions);
 app.use(session({
   key: "apitren_session",
   secret: process.env.SESSION_SECRET || "clave-secreta-cualquiercosa",
-  store: sessionStore, // <-- Asignamos la base de datos como almacén
+  store: sessionStore,
   resave: false,
   saveUninitialized: false,
   cookie: {
@@ -82,11 +82,16 @@ app.get("/test-db", async (req, res) => {
 // Aquí Express engancha todas las rutas de /login, /register, /trenes, /capturas, etc.
 app.use(authRoutes);
 app.use(trenesRoutes);
-app.use(capturasRoutes); // <-- Enlace de rutas de capturas
+app.use(capturasRoutes);
 
 // Ruta raíz (HTML Principal) protegida
 app.get("/", authMiddleware, (req, res) => {
   res.status(200).sendFile(path.join(publicPath, "html", "TRENES.html"));
+});
+
+// Servir la página TrenCapturado.html (Corregida con publicPath)
+app.get('/TrenCapturado.html', authMiddleware, (req, res) => {
+  res.sendFile(path.join(publicPath, "html", "TrenCapturado.html"));
 });
 
 // Ruta de Perfil de Usuario protegida

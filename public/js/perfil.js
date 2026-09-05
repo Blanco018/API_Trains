@@ -82,18 +82,24 @@ async function cargarCapturasPerfil() {
         }
 
         contenedor.innerHTML = capturas.map(item => {
-          const trenId = item.id || item.tren_id;
-          // Formatear fecha para el prompt (YYYY-MM-DD)
+          // Extraemos el ID exacto del tren (sirve tanto item.tren_id como item.id)
+          const trenId = item.tren_id || item.id;
           const fechaISO = item.fecha_captura ? new Date(item.fecha_captura).toISOString().split('T')[0] : '';
 
           return `
             <div class="card-captura">
-              <img src="${item.imagen_modelo || item.imagen || '/img/cargando/03-42-05-37_512.gif'}" alt="${item.serie || 'Tren'}">
+              <a href="/TrenCapturado.html?id=${trenId}" class="card-captura-link">
+                <img src="${item.imagen_modelo || item.imagen || '/img/cargando/03-42-05-37_512.gif'}" alt="${item.serie || 'Tren'}">
+              </a>
+
               <div class="card-captura-info">
                 <div class="card-info-content">
-                  <h4>${item.serie ? 'SERIE ' + item.serie : item.nombre}</h4>
+                  <a href="/TrenCapturado.html?id=${trenId}" style="text-decoration: none; color: inherit;">
+                    <h4>${item.serie ? 'SERIE ' + item.serie : item.nombre}</h4>
+                  </a>
                   <p>📅 Capturado el: ${new Date(item.fecha_captura).toLocaleDateString('es-ES')}</p>
                 </div>
+
                 <div class="card-options-menu">
                   <button class="btn-menu-options" onclick="toggleMenuOptions(event, ${trenId})" title="Opciones">⋮</button>
                   <div id="menu-dropdown-${trenId}" class="options-dropdown">
