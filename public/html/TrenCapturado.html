@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capturas del Tren - TrenDex</title>
+  <link rel="icon" type="image/png" href="/img/logoimg/images.png">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/vistas/capturas-tren.css">
+</head>
+<body class="body-detalle">
+
+  <div class="pagina-detalle-container">
+    
+    <!-- HEADER -->
+    <header class="main-header">
+      <div class="header-user">
+        <a href="/" class="btn-volver-inicio">← Volver al inicio</a>
+      </div>
+      <div class="header-center">
+        <h1 id="tren-titulo-header">TREN --</h1>
+        <p class="header-subtitle" id="tren-modelo-header">MODELO --</p>
+      </div>
+      <div class="header-action">
+        <a href="/perfil.html" class="btn-volver-inicio">Mi Perfil</a>
+      </div>
+    </header>
+
+    <main class="contenedor-principal-perfil">
+      
+      <!-- FICHA RESUMEN DEL TREN -->
+      <section class="ficha-resumen-tren">
+        <img id="tren-imagen-principal" src="/img/no-image.png" alt="Imagen del tren" class="img-ficha-tren">
+        <div class="info-ficha-tren">
+          <h2 id="tren-nombre">Cargando tren...</h2>
+          <p id="tren-descripcion">Cargando detalles...</p>
+        </div>
+      </section>
+
+      <hr class="separador-seccion">
+
+      <!-- SECCIÓN SUBIR NUEVA CAPTURA -->
+      <section class="sec-subir-captura">
+        <h3>Subir tu Captura</h3>
+        <form id="form-subir-captura" class="form-captura-box" enctype="multipart/form-data">
+          <div class="input-group">
+            <label for="input-foto-captura">Selecciona una imagen:</label>
+            <input type="file" id="input-foto-captura" name="imagen" accept="image/*" required>
+          </div>
+          <div class="input-group">
+            <textarea id="input-comentario-captura" name="comentario" placeholder="Añade una descripción o ubicación del avistamiento..." rows="3"></textarea>
+          </div>
+          <button type="submit" class="btn-subir-foto">Publicar Captura</button>
+        </form>
+      </section>
+
+      <!-- FEED DE PUBLICACIONES DE LA COMUNIDAD -->
+      <section class="sec-feed-capturas">
+        <h3>Capturas de la Comunidad</h3>
+        
+        <div id="grid-publicaciones" class="grid-publicaciones">
+          <!-- Las tarjetas de publicaciones se renderizarán aquí con JS -->
+          <p class="empty-state">No hay capturas registradas para este tren todavía. ¡Sé el primero en publicar una!</p>
+        </div>
+      </section>
+
+    </main>
+
+    <footer>
+      <p>Datos servidos por una API en Node.js + Express</p>
+      <p>V0.5.1</p>
+    </footer>
+
+  </div>
+
+  <script src="/js/TrenCapturado.js"></script>
+</body>
+</html>

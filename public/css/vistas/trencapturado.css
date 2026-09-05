@@ -1,0 +1,335 @@
+/* ==========================================
+   ESTILOS REFINADOS - CAPTURAS Y COMUNIDAD
+   ========================================== */
+
+/* Ficha Superior del Tren */
+.ficha-resumen-tren {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+  margin-top: 20px;
+}
+
+.img-ficha-tren {
+  width: 240px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  flex-shrink: 0;
+}
+
+.info-ficha-tren {
+  flex: 1;
+}
+
+.info-ficha-tren h2 {
+  margin: 0 0 8px 0;
+  color: #111827;
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+.info-ficha-tren p {
+  margin: 0;
+  color: #4b5563;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+.separador-seccion {
+  margin: 32px 0;
+  border: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, #d1d5db, transparent);
+}
+
+/* Formulario de Subida de Captura */
+.sec-subir-captura {
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e5e7eb;
+  margin-bottom: 36px;
+}
+
+.sec-subir-captura h3 {
+  margin: 0 0 20px 0;
+  color: #111827;
+  font-size: 1.3rem;
+  font-weight: 700;
+  border-bottom: 2px solid #f3f4f6;
+  padding-bottom: 12px;
+}
+
+.form-captura-box {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-captura-box label {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #374151;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.form-captura-box input[type="file"] {
+  padding: 16px;
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  background: #f8fafc;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  color: #475569;
+  font-weight: 500;
+}
+
+.form-captura-box input[type="file"]:hover {
+  border-color: #b41414;
+  background: #fef2f2;
+}
+
+.form-captura-box textarea {
+  width: 100%;
+  min-height: 90px;
+  padding: 14px 16px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  resize: vertical;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: #1e293b;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.form-captura-box textarea:focus {
+  border-color: #b41414;
+  box-shadow: 0 0 0 4px rgba(180, 20, 20, 0.15);
+}
+
+.btn-subir-foto {
+  background-color: #b41414;
+  color: #ffffff;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  align-self: flex-start;
+  box-shadow: 0 4px 14px rgba(180, 20, 20, 0.3);
+  transition: all 0.2s ease;
+}
+
+.btn-subir-foto:hover {
+  background-color: #8c0f0f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(180, 20, 20, 0.4);
+}
+
+/* Feed de Publicaciones de la Comunidad */
+.sec-feed-capturas h3 {
+  margin: 0 0 20px 0;
+  color: #111827;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.grid-publicaciones {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 28px;
+}
+
+.card-publicacion-comunidad {
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card-publicacion-comunidad:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.1);
+}
+
+.pub-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  background-color: #f8fafc;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.pub-usuario {
+  font-weight: 700;
+  color: #0f172a;
+  font-size: 0.95rem;
+}
+
+.pub-fecha {
+  color: #64748b;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.pub-imagen {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+}
+
+.pub-body {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.pub-comentario {
+  margin: 0 0 16px 0;
+  color: #334155;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.pub-acciones {
+  margin-bottom: 16px;
+}
+
+.btn-like {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  padding: 8px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #475569;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-like:hover,
+.btn-like.liked {
+  background-color: #fef2f2;
+  border-color: #b41414;
+  color: #b41414;
+}
+
+/* Sección de Comentarios */
+.pub-comentarios-seccion {
+  border-top: 1px solid #f1f5f9;
+  padding-top: 16px;
+  margin-top: auto;
+}
+
+.lista-comentarios {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 150px;
+  overflow-y: auto;
+  margin-bottom: 12px;
+  padding-right: 4px;
+}
+
+.lista-comentarios::-webkit-scrollbar {
+  width: 5px;
+}
+.lista-comentarios::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.comentario-item {
+  background: #f8fafc;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  color: #334155;
+  border: 1px solid #f1f5f9;
+}
+
+.comentario-item strong {
+  color: #0f172a;
+  margin-right: 4px;
+}
+
+.form-add-comentario {
+  display: flex;
+  gap: 8px;
+}
+
+.input-comentario-texto {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.input-comentario-texto:focus {
+  border-color: #b41414;
+}
+
+.btn-enviar-comentario {
+  background: #0f172a;
+  color: #ffffff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 700;
+  transition: background-color 0.2s ease;
+}
+
+.btn-enviar-comentario:hover {
+  background: #1e293b;
+}
+
+.empty-state {
+  text-align: center;
+  color: #64748b;
+  padding: 24px;
+  font-size: 0.95rem;
+}
+
+/* Adaptación Dispositivos Móviles */
+@media (max-width: 640px) {
+  .ficha-resumen-tren {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .img-ficha-tren {
+    width: 100%;
+    height: 180px;
+  }
+
+  .grid-publicaciones {
+    grid-template-columns: 1fr;
+  }
+}
