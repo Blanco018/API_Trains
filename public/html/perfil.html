@@ -46,7 +46,7 @@
       <!-- Pestaña 1: Mi Colección -->
       <section id="tab-coleccion" class="tab-content active">
         <div class="coleccion-header">
-          <h3>Estadísticas de Caza</h3>
+          <h3>Listado de Capturas</h3>
           <p>Has capturado <strong id="stat-cazados">0</strong> de <strong id="stat-totales">0</strong> trenes disponibles.</p>
           <div class="barra-progreso-container">
             <div id="barra-progreso" class="barra-progreso-fill" style="width: 0%;"></div>
@@ -89,18 +89,22 @@
       <!-- Pestaña 3: Amigos & Feed -->
       <section id="tab-amigos" class="tab-content">
         <div class="amigos-container">
+          <!-- Columna izquierda: Búsqueda y lista -->
           <div class="amigos-sidebar">
             <h3>Buscar Amigos</h3>
-            <div class="search-box-amigos">
-              <input type="text" placeholder="Nombre de usuario...">
-              <button>Enviar Solicitud</button>
+            <div class="form-buscar-amigos">
+              <input type="text" class="input-buscar-amigo" placeholder="Nombre de usuario...">
+              <button class="btn-enviar-solicitud">Enviar Solicitud</button>
             </div>
-            <h4>Mis Amigos (0)</h4>
+
+            <h3>Mis Amigos (0)</h3>
             <ul class="lista-amigos">
               <li class="empty-state">No tienes amigos añadidos aún.</li>
             </ul>
           </div>
-          <div class="feed-actividad">
+
+          <!-- Columna derecha: Muro de publicaciones -->
+          <div class="feed-main">
             <h3>Muro de Actividad</h3>
             <div class="feed-lista">
               <p class="empty-state">No hay publicaciones recientes de tus amigos.</p>
@@ -114,7 +118,7 @@
     <!-- FOOTER CORPORATIVO -->
     <footer>
       <p>Datos servidos por una API en Node.js + Express</p>
-      <p>V0.4.3</p>
+      <p>V0.4.4</p>
     </footer>
   </div>
 

@@ -18,6 +18,7 @@ const authMiddleware = require("./middlewares/auth.middleware");
 // Importamos las rutas que aislamos en la carpeta /routes
 const authRoutes = require("./routes/auth.routes");
 const trenesRoutes = require("./routes/trenes.routes");
+const capturasRoutes = require("./routes/capturas.routes"); // <-- Módulo de capturas integrado
 
 // ==========================================
 // 3. INICIALIZACIÓN Y CONFIGURACIÓN
@@ -78,9 +79,10 @@ app.get("/test-db", async (req, res) => {
 // ==========================================
 // 5. REGISTRO DE RUTAS MODULARIZADAS
 // ==========================================
-// Aquí Express engancha todas las rutas de /login, /register, /trenes, etc.
+// Aquí Express engancha todas las rutas de /login, /register, /trenes, /capturas, etc.
 app.use(authRoutes);
 app.use(trenesRoutes);
+app.use(capturasRoutes); // <-- Enlace de rutas de capturas
 
 // Ruta raíz (HTML Principal) protegida
 app.get("/", authMiddleware, (req, res) => {
@@ -91,6 +93,7 @@ app.get("/", authMiddleware, (req, res) => {
 app.get("/perfil", authMiddleware, (req, res) => {
   res.status(200).sendFile(path.join(publicPath, "html", "perfil.html"));
 });
+
 // ==========================================
 // 6. EXPORTACIONES
 // ==========================================
