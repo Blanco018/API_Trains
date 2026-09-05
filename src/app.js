@@ -87,6 +87,10 @@ app.get("/", authMiddleware, (req, res) => {
   res.status(200).sendFile(path.join(publicPath, "html", "TRENES.html"));
 });
 
+// Ruta de Perfil de Usuario protegida
+app.get("/perfil", authMiddleware, (req, res) => {
+  res.status(200).sendFile(path.join(publicPath, "html", "perfil.html"));
+});
 // ==========================================
 // 6. EXPORTACIONES
 // ==========================================
