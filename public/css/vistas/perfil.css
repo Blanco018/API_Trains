@@ -153,8 +153,8 @@ html, body {
 }
 
 .logro-card.desbloqueado {
-  border-color: #ffd700;
-  background-color: #fffdf0;
+  border-color: #b41414;
+  background-color: rgb(248, 229, 229);
 }
 
 .logro-card.bloqueado {
@@ -345,6 +345,98 @@ html, body {
 
 .btn-option-item.btn-delete:hover {
   background-color: #ffe6e6;
+}
+
+/* ==========================================
+   ESTILOS DE LA SECCIÓN AMIGOS & FEED
+   ========================================== */
+
+/* Contenedor principal de dos columnas */
+.amigos-container {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 25px;
+  margin-top: 10px;
+}
+
+/* Tarjetas contenedor para dar contraste sobre el fondo */
+.amigos-sidebar, 
+.feed-main {
+  background: rgb(248, 229, 229);
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Títulos de sección */
+.amigos-sidebar h3, 
+.feed-main h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 1.1rem;
+  color: #1a1a1a;
+  border-bottom: 2px solid #9f1a1a;
+  padding-bottom: 8px;
+}
+
+/* Buscador de Amigos */
+.form-buscar-amigos {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.input-buscar-amigo {
+  width: 100%;
+  padding: 10px 12px;
+  background-color: rgb(248, 229, 229);
+  border: 1px solid #cccccc;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-buscar-amigo:focus {
+  border-color: #b41414;
+  box-shadow: 0 0 0 3px rgba(180, 20, 20, 0.15);
+}
+
+.btn-enviar-solicitud {
+  background-color: #b41414;
+  color: #ffffff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-enviar-solicitud:hover {
+  background-color: #8c0f0f;
+}
+
+/* Listado de amigos y estados vacíos */
+.lista-amigos {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.empty-state {
+  color: #666666;
+  font-style: italic;
+  font-size: 0.9rem;
+  background: rgb(248, 229, 229);
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px dashed #dddddd;
+  text-align: center;
 }
 
 /* ==========================================

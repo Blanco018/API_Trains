@@ -89,18 +89,22 @@
       <!-- Pestaña 3: Amigos & Feed -->
       <section id="tab-amigos" class="tab-content">
         <div class="amigos-container">
+          <!-- Columna izquierda: Búsqueda y lista -->
           <div class="amigos-sidebar">
             <h3>Buscar Amigos</h3>
-            <div class="search-box-amigos">
-              <input type="text" placeholder="Nombre de usuario...">
-              <button>Enviar Solicitud</button>
+            <div class="form-buscar-amigos">
+              <input type="text" class="input-buscar-amigo" placeholder="Nombre de usuario...">
+              <button class="btn-enviar-solicitud">Enviar Solicitud</button>
             </div>
-            <h4>Mis Amigos (0)</h4>
+
+            <h3>Mis Amigos (0)</h3>
             <ul class="lista-amigos">
               <li class="empty-state">No tienes amigos añadidos aún.</li>
             </ul>
           </div>
-          <div class="feed-actividad">
+
+          <!-- Columna derecha: Muro de publicaciones -->
+          <div class="feed-main">
             <h3>Muro de Actividad</h3>
             <div class="feed-lista">
               <p class="empty-state">No hay publicaciones recientes de tus amigos.</p>
