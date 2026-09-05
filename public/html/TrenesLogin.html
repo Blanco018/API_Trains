@@ -2,8 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Login / Registro</title>
-  <!-- CSS existente -->
+  <title>Login / Registro - TrenDex</title>
   <link rel="stylesheet" href="/css/main.css">
   <link rel="icon" type="image/png" href="/img/logoimg/images.png">
 </head>
@@ -22,75 +21,26 @@
       <input type="password" id="passwordRegister" name="passwordRegister" placeholder="Contraseña" required>
       <button type="submit">Registrarse</button>
     </form>
-  </div>
 
-  <!-- MODAL POP-UP -->
-  <div id="modalSuccess" class="modal-overlay hidden">
-    <div class="modal-card">
-      <div class="modal-icon">🎉</div>
-      <h2>¡Registro e inicio de sesión exitosos!</h2>
-      <p>¿Deseas acceder directamente a la aplicación?</p>
-      <div class="modal-actions">
-        <button id="btnModalYes" class="btn-modal-yes">Sí, acceder</button>
-        <button id="btnModalNo" class="btn-modal-no">No, mantenerme aquí</button>
+    <!-- MODAL POP-UP -->
+    <div id="modalSuccess" class="modal-overlay hidden">
+      <div class="modal-card">
+        <div class="modal-icon">🎉</div>
+        <h2>¡Registro e inicio de sesión exitosos!</h2>
+        <p>¿Deseas acceder directamente a la aplicación?</p>
+        <div class="modal-actions">
+          <button id="btnModalYes" class="btn-modal-yes">Sí, acceder</button>
+          <button id="btnModalNo" class="btn-modal-no">No, mantenerme aquí</button>
+        </div>
       </div>
     </div>
   </div>
-
-  <script>
-    const formRegister = document.getElementById('formRegister');
-    const modalSuccess = document.getElementById('modalSuccess');
-    const btnModalYes = document.getElementById('btnModalYes');
-    const btnModalNo = document.getElementById('btnModalNo');
-
-    formRegister.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const username = document.getElementById('usernameRegister').value;
-      const password = document.getElementById('passwordRegister').value;
-
-      try {
-        const response = await fetch('/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ usernameRegister: username, passwordRegister: password })
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          const autoLogin = await fetch('/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ usernameLogIn: username, passwordLogIn: password })
-          });
-
-          if (autoLogin.ok) {
-            formRegister.reset();
-            // Mostrar modal quitando la clase 'hidden'
-            modalSuccess.classList.remove('hidden');
-          }
-        } else {
-          alert(data.message || 'Error al registrar usuario');
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    });
-
-    // Eventos de los botones del modal
-    btnModalYes.addEventListener('click', () => {
-      window.location.href = '/';
-    });
-
-    btnModalNo.addEventListener('click', () => {
-      modalSuccess.classList.add('hidden');
-    });
-  </script>
-      <footer>
+  
+    <footer>
       <p>Datos servidos por una API en Node.js + Express</p>
       <p>V0.4.3</p>
     </footer>
-  </div>
+  <!-- Carga del script desacoplado -->
+  <script src="/js/TrenesLogin.js"></script>
 </body>
 </html>
