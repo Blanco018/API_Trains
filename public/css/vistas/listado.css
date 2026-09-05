@@ -1,3 +1,17 @@
+/* =========================
+   USUARIO CLICKABLE
+   ========================= */
+   .user-link {
+  color: #ffffff;
+  font-weight: bold;
+  text-decoration: none;
+  transition: opacity 0.2s ease, text-decoration 0.2s ease;
+}
+
+.user-link:hover {
+  text-decoration: underline;
+  opacity: 0.85;
+}
 
 /* =========================
    BUSCADOR

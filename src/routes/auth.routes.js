@@ -6,6 +6,14 @@ const authController = require("../controllers/auth.controller");
 // Calculamos la ruta a la carpeta 'public'
 const publicPath = path.join(__dirname, "..", "..", "public");
 
+// Middleware para comprobar si el usuario está autenticado
+const isAuthenticated = (req, res, next) => {
+  if (req.session && req.session.user) {
+    return next();
+  }
+  res.redirect("/login");
+};
+
 // Rutas tipo POST para procesar credenciales
 router.post("/register", authController.register);
 router.post("/login", authController.login);
@@ -16,6 +24,11 @@ router.get("/logout", authController.logout);
 // Ruta GET para servir el archivo HTML del formulario de login
 router.get("/login", (req, res) => {
   res.sendFile(path.join(publicPath, "html", "TrenesLogin.html"));
+});
+
+// Servir la vista de perfil protegida (usando publicPath para mantener consistencia)
+router.get("/perfil", isAuthenticated, (req, res) => {
+  res.sendFile(path.join(publicPath, "html", "perfil.html"));
 });
 
 // Obtener los datos del usuario logueado desde la sesión

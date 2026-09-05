@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil de Usuario - TrenDex</title>
+  <link rel="icon" type="image/png" href="/img/logoimg/images.png">
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body class="body-detalle">
+
+  <div class="pagina-detalle-container">
+    <!-- Header simétrico en 3 columnas -->
+    <header class="main-header">
+      <!-- Bloque 1 (Izquierda): Saludo con enlace activo -->
+      <div class="header-user">
+        Hola de nuevo, <a href="/perfil" id="username-display" class="user-link">...</a>
+      </div>
+
+      <!-- Bloque 2 (Centro): Título de la vista -->
+      <div class="header-center">
+        <h1>PERFIL DE USUARIO</h1>
+        <p class="header-subtitle">INFORMACIÓN DE TU CUENTA</p>
+      </div>
+
+      <!-- Bloque 3 (Derecha): Botón CERRAR SESIÓN -->
+      <div class="header-action">
+        <a href="/logout" class="btn-logout">Cerrar sesión</a>
+      </div>
+    </header>
+
+    <!-- Contenido Principal (Espacio limpio para el futuro) -->
+    <main class="contenedor-principal-detalle">
+      <!-- Sección vacía temporalmente -->
+    </main>
+
+    <!-- Footer Corporativo -->
+    <footer>
+      <p>Datos servidos por una API en Node.js + Express</p>
+      <p>V0.3.1</p>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const res = await fetch('/api/me');
+        if (res.ok) {
+          const user = await res.json();
+          document.getElementById('username-display').textContent = user.username || 'Usuario';
+        } else {
+          window.location.href = '/login';
+        }
+      } catch (err) {
+        console.error('Error al cargar la información del usuario:', err);
+      }
+    });
+  </script>
+</body>
+</html>

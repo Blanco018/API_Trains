@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>TrenDex</title>
-  <!-- (NUEVO) Favicon para la pestaña del navegador -->
+  <!-- Favicon para la pestaña del navegador -->
   <link rel="icon" type="image/png" href="/img/logoimg/images.png">
   <link rel="stylesheet" href="/css/main.css">
 </head>
@@ -11,18 +11,18 @@
 
   <!-- Header maquetado en 3 columnas simétricas -->
   <header class="main-header">
-    <!-- Bloque 1 (Izquierda): Saludo al usuario autenticado -->
+    <!-- Bloque 1 (Izquierda): Saludo con enlace al perfil del usuario -->
     <div class="header-user">
-      Hola de nuevo, <span id="username-display">...</span>
+      Hola de nuevo, <a href="/perfil" id="username-display" class="user-link">...</a>
     </div>
     
-    <!-- Bloque 2 (Centro): Títulos principales del proyecto (CORREGIDO: usa header-center) -->
+    <!-- Bloque 2 (Centro): Títulos principales del proyecto -->
     <div class="header-center">
       <h1>🚆 TRENDEX 🚆</h1>
       <p class="header-subtitle">BUSCADOR DE MODELOS FERROVIARIOS</p>
     </div>
 
-    <!-- Bloque 3 (Derecha): Enlace de Logout (CORREGIDO: usa header-action) -->
+    <!-- Bloque 3 (Derecha): Enlace de Logout -->
     <div class="header-action">
       <a href="/logout" class="btn-logout">Cerrar sesión</a>
     </div>

@@ -1,0 +1,17 @@
+/* ==========================================
+   ESTILOS EXCLUSIVOS DE LA VISTA DE PERFIL
+   ========================================== */
+
+.card-detalle section.col-derecha {
+  width: 100%;
+}
+
+.caja-descripcion p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+#profile-username {
+  color: #b41414;
+  font-weight: bold;
+}

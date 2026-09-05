@@ -1,9 +1,10 @@
 /* ==========================================
    1. IMPORTACIONES DE MÓDULOS (Siempre al inicio)
    ========================================== */
- @import url('./vistas/login.css');
+ @import url('./vistas/Login.css');
  @import url('./vistas/listado.css');
  @import url('./vistas/detalles.css');
+ @import url('./vistas/perfil.css');
 
 /* =========================
    ESTILOS GENERALES
