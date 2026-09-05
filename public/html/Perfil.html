@@ -10,51 +10,115 @@
 <body class="body-detalle">
 
   <div class="pagina-detalle-container">
-    <!-- Header simétrico en 3 columnas -->
+    
+    <!-- HEADER 3 COLUMNAS -->
     <header class="main-header">
-      <!-- Bloque 1 (Izquierda): Saludo con enlace activo -->
+      <!-- Bloque 1 (Izquierda): Botón Volver al Listado -->
       <div class="header-user">
-        Hola de nuevo, <a href="/perfil" id="username-display" class="user-link">...</a>
+        <a href="/" class="btn-volver-inicio">← Volver al inicio</a>
       </div>
 
-      <!-- Bloque 2 (Centro): Título de la vista -->
+      <!-- Bloque 2 (Centro): PERFIL DE [USUARIO] + Rango -->
       <div class="header-center">
-        <h1>PERFIL DE USUARIO</h1>
-        <p class="header-subtitle">INFORMACIÓN DE TU CUENTA</p>
+        <h1>PERFIL DE <span id="header-user-title">...</span></h1>
+        <p class="header-subtitle" id="user-rank-subtitle">PRINCIPIANTE</p>
       </div>
 
-      <!-- Bloque 3 (Derecha): Botón CERRAR SESIÓN -->
+      <!-- Bloque 3 (Derecha): Notificaciones y Logout -->
       <div class="header-action">
+        <button class="btn-notificaciones" title="Notificaciones">
+          🔔 <span class="notif-badge">0</span>
+        </button>
         <a href="/logout" class="btn-logout">Cerrar sesión</a>
       </div>
     </header>
 
-    <!-- Contenido Principal (Espacio limpio para el futuro) -->
-    <main class="contenedor-principal-detalle">
-      <!-- Sección vacía temporalmente -->
+    <!-- NAVEGACIÓN POR PESTAÑAS (TABS) -->
+    <nav class="perfil-tabs-nav">
+      <button class="tab-btn active" data-tab="coleccion">📸 Mi Colección</button>
+      <button class="tab-btn" data-tab="logros">🏆 Logros & Rangos</button>
+      <button class="tab-btn" data-tab="amigos">👥 Amigos & Feed</button>
+    </nav>
+
+    <!-- CONTENIDO DE PESTAÑAS -->
+    <main class="contenedor-principal-perfil">
+      
+      <!-- Pestaña 1: Mi Colección -->
+      <section id="tab-coleccion" class="tab-content active">
+        <div class="coleccion-header">
+          <h3>Estadísticas de Caza</h3>
+          <p>Has capturado <strong id="stat-cazados">0</strong> de <strong id="stat-totales">0</strong> trenes disponibles.</p>
+          <div class="barra-progreso-container">
+            <div id="barra-progreso" class="barra-progreso-fill" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <div class="galeria-capturas" id="galeria-capturas">
+          <p class="empty-state">Aún no has registrado ningún avistamiento. Entra a la ficha de un tren para añadirlo a tu colección.</p>
+        </div>
+      </section>
+
+      <!-- Pestaña 2: Logros & Rangos -->
+      <section id="tab-logros" class="tab-content">
+        <h3>Tus Logros e Insignias</h3>
+        <div class="grid-logros">
+          <div class="logro-card desbloqueado">
+            <span class="logro-icon">🐣</span>
+            <div class="logro-info">
+              <h4>Primer Avistamiento</h4>
+              <p>Rango: PRINCIPIANTE</p>
+            </div>
+          </div>
+          <div class="logro-card bloqueado">
+            <span class="logro-icon">⚡</span>
+            <div class="logro-info">
+              <h4>Cazador de Alta Velocidad</h4>
+              <p>Captura todos los trenes AVE, Iryo y Ouigo.</p>
+            </div>
+          </div>
+          <div class="logro-card bloqueado">
+            <span class="logro-icon">👑</span>
+            <div class="logro-info">
+              <h4>Leyenda Ferroviaria</h4>
+              <p>Completa más del 80% de la base de datos.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pestaña 3: Amigos & Feed -->
+      <section id="tab-amigos" class="tab-content">
+        <div class="amigos-container">
+          <div class="amigos-sidebar">
+            <h3>Buscar Amigos</h3>
+            <div class="search-box-amigos">
+              <input type="text" placeholder="Nombre de usuario...">
+              <button>Enviar Solicitud</button>
+            </div>
+            <h4>Mis Amigos (0)</h4>
+            <ul class="lista-amigos">
+              <li class="empty-state">No tienes amigos añadidos aún.</li>
+            </ul>
+          </div>
+          <div class="feed-actividad">
+            <h3>Muro de Actividad</h3>
+            <div class="feed-lista">
+              <p class="empty-state">No hay publicaciones recientes de tus amigos.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </main>
 
-    <!-- Footer Corporativo -->
+    <!-- FOOTER CORPORATIVO -->
     <footer>
       <p>Datos servidos por una API en Node.js + Express</p>
       <p>V0.3.1</p>
     </footer>
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-      try {
-        const res = await fetch('/api/me');
-        if (res.ok) {
-          const user = await res.json();
-          document.getElementById('username-display').textContent = user.username || 'Usuario';
-        } else {
-          window.location.href = '/login';
-        }
-      } catch (err) {
-        console.error('Error al cargar la información del usuario:', err);
-      }
-    });
-  </script>
+  <!-- Vinculación del JavaScript modular externo -->
+  <script src="/js/perfil.js"></script>
 </body>
 </html>
