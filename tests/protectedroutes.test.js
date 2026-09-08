@@ -60,13 +60,13 @@ describe("Ruta protegida /trenes", () => {
     // - mantiene la sesión entre peticiones
     const agent = request.agent(app);
 
-    // 1️⃣ Simulamos un login válido
-    // Esto crea una sesión en Express
+    // 1️⃣ Simulamos un login válido usando las claves correctas y tipo form
     const loginResponse = await agent
       .post("/login")
+      .type("form")
       .send({
-        username: "1",
-        password: "1"
+        usernameLogIn: "1",
+        passwordLogIn: "1"
       });
     // Log para confirmar que el login se ejecutó
     console.log("✅ LOGIN COMPLETADO - status:", loginResponse.statusCode);
@@ -90,7 +90,9 @@ describe("Ruta protegida /trenes", () => {
   afterAll(async () => {
     // 🔹 CAMBIO: Limpiamos el usuario de prueba creado antes de cerrar la conexión
     await db.query("DELETE FROM users WHERE username = ?", ["1"]);
-    await db.end();
+    if (db && db.end) {
+      await db.end();
+    }
   });
 
 });

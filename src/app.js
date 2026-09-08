@@ -6,7 +6,14 @@ const path = require("path");
 const session = require("express-session");
 const MySQLStore = require("express-mysql-session")(session); // Almacenamiento de sesiones en MySQL
 const bodyParser = require("body-parser");
-require("dotenv").config();
+
+// 🔹 Carga condicional: lee .env.test si estamos en testing, de lo contrario .env
+const dotenv = require("dotenv");
+if (process.env.NODE_ENV === "test") {
+  dotenv.config({ path: path.resolve(__dirname, "..", ".env.test") });
+} else {
+  dotenv.config();
+}
 
 // ==========================================
 // 2. IMPORTAR MÓDULOS DE NUESTRA ARQUITECTURA
@@ -40,7 +47,7 @@ const sessionStoreOptions = {
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   createDatabaseTable: true,
-  ssl: { rejectUnauthorized: false }
+  ssl: process.env.NODE_ENV === "test" ? false : { rejectUnauthorized: false }
 };
 
 const sessionStore = new MySQLStore(sessionStoreOptions);

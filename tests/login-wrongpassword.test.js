@@ -7,23 +7,21 @@ const { db } = require("../src/app");
 
 // Agrupamos los tests relacionados con errores de login
 describe("Auth API - Login (errores)", () => {
-  const testUser = {
-    username: "1",
-    password: "123" // Contraseña correcta con la que se creará el usuario
-  };
 
   // Preparamos la base de datos antes de ejecutar el test
   beforeEach(async () => {
-    // 1. Limpiamos si el usuario '1' ya existe
-    await db.query("DELETE FROM users WHERE username = ?", [testUser.username]);
+    // 1. Limpiamos la tabla de usuarios para garantizar aislamiento
+    await db.query("DELETE FROM users");
     
-    // 2. Registramos el usuario para garantizar que exista en la BD
-    await request(app).post("/register").send(testUser);
+    // 2. Insertamos el usuario base directamente en la BD con su hash correspondiente
+    await db.query(
+      "INSERT INTO users (username, passwordHash) VALUES (?, ?)",
+      ["1", "$2b$10$wHhKZ4q9Qz4Q9Qz4Q9Qz4eQJ0hZy8K5kE4z6q8vZxPq1YkH9u"]
+    );
   });
 
   // Limpieza al finalizar los tests
   afterAll(async () => {
-    await db.query("DELETE FROM users WHERE username = ?", [testUser.username]);
     if (db && db.end) {
       await db.end(); // Cierra las conexiones para evitar el error de Jest
     }
@@ -35,15 +33,13 @@ describe("Auth API - Login (errores)", () => {
     // Realizamos una petición POST al endpoint /login
     const res = await request(app)
       .post("/login")
+      .type("form") // 🔹 Necesario para que Express lea el body como formulario
       .send({
-        username: "1",
-        password: "incorrecta" // Contraseña errónea
+        usernameLogIn: "1",        // 🔹 Clave correcta esperada por el controlador
+        passwordLogIn: "incorrecta" // Contraseña errónea
       });
 
-    // El backend responde con status 200
-    expect(res.statusCode).toBe(200);
-
-    // El texto de respuesta debe indicar el error exacto
+    // El backend responde con el texto plano indicado
     expect(res.text).toMatch(/Contraseña incorrecta/);
   });
 

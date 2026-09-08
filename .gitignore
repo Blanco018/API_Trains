@@ -1,3 +1,4 @@
 node_modules
 .env
-BuenosMetodosGit
+BuenosMetodosGit.env.test
+.env.test

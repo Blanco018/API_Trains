@@ -4,10 +4,10 @@
   "description": "",
   "main": "API-TREN.js",
   "scripts": {
-    "test": "jest --runInBand",
-    "test:watch": "jest --watch",
     "start": "node src/server.js",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "test": "cross-env NODE_ENV=test jest --runInBand --forceExit",
+    "test:watch": "cross-env NODE_ENV=test jest --watch"
   },
   "keywords": [],
   "author": "",
@@ -31,6 +31,7 @@
   },
   "homepage": "https://github.com/Blanco018/API_Trains#readme",
   "devDependencies": {
+    "cross-env": "^10.1.0",
     "dotenv": "^17.2.3",
     "jest": "^30.2.0",
     "nodemon": "^3.1.11",

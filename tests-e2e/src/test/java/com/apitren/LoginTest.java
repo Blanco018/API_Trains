@@ -22,9 +22,9 @@ public class LoginTest {
             // Navega a la URL especificada
             driver.get("https://api-trains.onrender.com/login");
             
-            String currentUserHTMLPath="username";
+            String currentUserHTMLPath="usernameLogIn";
             String currentUser="QAuser";
-            String currentPasswordHTMLPath="password";
+            String currentPasswordHTMLPath="passwordLogIn";
             String currentPassword="123456789";
             
             // 1. Localizar el campo de usuario y escribir el texto
@@ -56,7 +56,7 @@ public class LoginTest {
 
             // Envía el formulario
             driver.findElement(By.cssSelector("button[type='submit']")).click();
-
+            Thread.sleep(5000);
             // Obtiene la URL actual
             String currentUrl = driver.getCurrentUrl();
             String expectedUrl = "https://api-trains.onrender.com/";

@@ -49,11 +49,14 @@ describe("Ruta protegida / (home) y /logout", () => {
     // 🔹 Creamos un agent para mantener la sesión
     const agent = request.agent(app);
 
-    // 🔹 Hacemos login primero
-    const loginRes = await agent.post("/login").send({
-      username: "1",
-      password: "1"
-    });
+    // 🔹 Hacemos login primero con los campos correctos y tipo form
+    const loginRes = await agent
+      .post("/login")
+      .type("form")
+      .send({
+        usernameLogIn: "1",
+        passwordLogIn: "1"
+      });
     console.log("✅ LOGIN COMPLETADO - status:", loginRes.statusCode);
 
     // 🔹 Accedemos a / con sesión
@@ -70,11 +73,14 @@ describe("Ruta protegida / (home) y /logout", () => {
   it("GET /logout destruye la sesión y redirige al login", async () => {
     const agent = request.agent(app);
 
-    // 🔹 Hacemos login para crear la sesión
-    await agent.post("/login").send({
-      username: "1",
-      password: "1"
-    });
+    // 🔹 Hacemos login para crear la sesión con los campos correctos
+    await agent
+      .post("/login")
+      .type("form")
+      .send({
+        usernameLogIn: "1",
+        passwordLogIn: "1"
+      });
 
     // 🔹 Llamamos al endpoint de logout
     const res = await agent.get("/logout");
@@ -93,7 +99,8 @@ describe("Ruta protegida / (home) y /logout", () => {
   afterAll(async () => {
     // 🔹 CAMBIO: Limpiamos el usuario de prueba creado antes de cerrar la conexión
     await db.query("DELETE FROM users WHERE username = ?", ["1"]);
-    await db.end();
+    if (db && db.end) {
+      await db.end();
+    }
   });
-
 });

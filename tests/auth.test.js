@@ -1,116 +1,107 @@
-// Importa la librería supertest, que sirve para hacer peticiones HTTP
-// simuladas a una aplicación Express (sin levantar el servidor real)
 const request = require("supertest");
-
-// Importa la aplicación Express desde el archivo app.js
-// Se usa para poder probar sus endpoints
-// 🔹 Ahora también importamos la DB para limpiar y preparar datos
 const { app, db } = require("../src/app");
 
-// Describe un conjunto de tests relacionados con la API de autenticación
 describe("Auth API", () => {
 
-  // 🔹 Antes de cada test limpiamos la tabla de usuarios y creamos un usuario base
   beforeEach(async () => {
-    // 🔹 Borramos todos los usuarios existentes
+    // Vaciamos la tabla para aislar cada prueba
     await db.query("DELETE FROM users");
 
-    // 🔹 Insertamos un usuario base con username '1' y password '1'
-    // 🔹 Este hash corresponde a bcrypt de la contraseña '1'
+    // Insertamos usuario base (username '1', password '1')
     await db.query(
       "INSERT INTO users (username, passwordHash) VALUES (?, ?)",
-      [
-        "1",
-        "$2b$10$wHhKZ4q9Qz4Q9Qz4Q9Qz4eQJ0hZy8K5kE4z6q8vZxPq1YkH9u"
-      ]
+      ["1", "$2b$10$wHhKZ4q9Qz4Q9Qz4Q9Qz4eQJ0hZy8K5kE4z6q8vZxPq1YkH9u"]
     );
   });
 
-  // Define un test individual
-  // El texto describe el comportamiento esperado
+  // 🔹 Test 1: LOGIN CON USUARIO INEXISTENTE
   it("POST /login falla si el usuario no existe", async () => {
-
-    // Realiza una petición HTTP POST al endpoint /login
-    // usando la app de Express
     const res = await request(app)
-      .post("/login") // endpoint al que se hace la petición
+      .post("/login")
+      .type("form")
       .send({
-        // Cuerpo de la petición (req.body)
-        username: "usuario_inexistente",
-        password: "1234"
+        usernameLogIn: "usuario_inexistente",
+        passwordLogIn: "1234"
       });
-   // console.log(res.statusCode, res.text);
 
-    // Verifica que el código de estado HTTP de la respuesta
-    // sea 200 (aunque el login falle)
-    expect(res.statusCode).toBe(200);
+    expect(res.text).toBe("Usuario no encontrado");
   });
 
-  // 🔹 Test: login con contraseña incorrecta
+  // 🔹 Test 2: LOGIN CON CONTRASEÑA INCORRECTA
   it("POST /login falla si la contraseña es incorrecta", async () => {
     const res = await request(app)
       .post("/login")
+      .type("form")
       .send({
-        username: "1",
-        password: "incorrecta"
+        usernameLogIn: "1",
+        passwordLogIn: "incorrecta"
       });
 
-    // 🔹 Esperamos que devuelva 200 aunque falle
-    expect(res.statusCode).toBe(200);
-
-    // 🔹 El texto de respuesta debe contener 'Contraseña incorrecta'
-    expect(res.text).toMatch(/Contraseña incorrecta/);
+    expect(res.text).toBe("Contraseña incorrecta");
   });
 
-  // 🔹 Test: registro de usuario nuevo
+  // 🔹 Test 3: REGISTRO DE UN NUEVO USUARIO
   it("POST /register crea un usuario nuevo", async () => {
-    const newUser = "user_test_" + Date.now(); // 🔹 username único por test
+    const newUser = "user_test_" + Date.now();
 
     const res = await request(app)
       .post("/register")
+      .type("form")
       .send({
-        username: newUser,
-        password: "1234"
+        usernameRegister: newUser,
+        passwordRegister: "1234"
       });
 
+    // 1. Verificamos respuesta de la API (Status 200 y OK en JSON)
     expect(res.statusCode).toBe(200);
-    expect(res.text).toMatch(/Usuario creado/);
+    expect(res.body.ok).toBe(true);
+
+    // 2. Verificamos la creación real en la BD local de test
+    const [rows] = await db.query(
+      "SELECT * FROM users WHERE username = ?",
+      [newUser]
+    );
+
+    expect(rows.length).toBe(1);
+    expect(rows[0].username).toBe(newUser);
   });
 
-  // 🔹 Test: registro de usuario duplicado
+  // 🔹 Test 4: REGISTRO DUPLICADO
   it("POST /register falla si el usuario ya existe", async () => {
     const res = await request(app)
       .post("/register")
+      .type("form")
       .send({
-        username: "1",
-        password: "1234"
+        usernameRegister: "1",
+        passwordRegister: "1234"
       });
 
-    expect(res.statusCode).toBe(200);
-    expect(res.text).toMatch(/Usuario ya existe/);
+    expect(res.statusCode).toBe(400);
+    expect(res.body.message).toBe("El usuario ya existe");
   });
 
-  // 🔹 Test: logout destruye la sesión
+  // 🔹 Test 5: CIERRE DE SESIÓN
   it("GET /logout destruye la sesión y redirige al login", async () => {
     const agent = request.agent(app);
 
-    // 🔹 Simulamos un login válido para tener sesión
-    await agent.post("/login").send({
-      username: "1",
-      password: "1"
-    });
+    await agent
+      .post("/login")
+      .type("form")
+      .send({
+        usernameLogIn: "1",
+        passwordLogIn: "1"
+      });
 
-    // 🔹 Llamamos al endpoint de logout
     const res = await agent.get("/logout");
 
-    // 🔹 Verificamos redirección al login
     expect(res.statusCode).toBe(302);
     expect(res.headers.location).toBe("/login");
   });
 
-  // 🔹 Cerramos la conexión a la DB al final de todos los tests
   afterAll(async () => {
-    await db.end();
+    if (db && db.end) {
+      await db.end();
+    }
   });
 
 });

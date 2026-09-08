@@ -1,0 +1,44 @@
+📂 public/ (FRONTEND - Navegador)
+ │
+ ├── 📂 css/
+ │    └── 📄 TRENES.css        ──► Estilos globales y diseño.
+ │                                 ✏️ [MODIFICAR]: Añadir estilos (.nav-arrow) de las flechas.
+ │
+ ├── 📂 html/
+ │    ├── 📄 TRENES.html       ──► Catálogo / Listado principal de trenes.
+ │    ├── 📄 TrenesDetalles.html ─► Vista de detalle (foto y descripción).
+ │    │                            ✏️ [MODIFICAR]: Insertar los <button> de las flechas.
+ │    └── 📄 TrenesLogin.html  ──► Formulario de inicio de sesión.
+ │
+ ├── 📂 img/                   ──► Imágenes de los modelos de trenes.
+ │
+ └── 📂 js/
+      ├── 📄 TRENES.js         ──► Lógica para pintar la lista completa.
+      └── 📄 TrenesDetalles.js ──► Petición fetch e interacción del detalle.
+                                   ✏️ [MODIFICAR]: Evento click de flechas para cargar prevId/nextId.
+
+───────────────────────────────────────────────────────────────────────────────
+
+ 📂 src/ (BACKEND - Servidor Node.js/Express)
+ │
+ ├── 📂 config/
+ │    └── 📄 db.js             ──► Conexión a la base de datos MySQL.
+ │
+ ├── 📂 controllers/
+ │    ├── 📄 auth.controller.js──► Lógica de autenticación y usuarios.
+ │    └── 📄 trenes.controller.js ─► Consultas SQL a la base de datos.
+ │                                 ✏️ [MODIFICAR]: Buscar prevId y nextId en el SELECT del detalle.
+ │
+ ├── 📂 middlewares/
+ │    └── 📄 auth.middleware.js──► Protección de rutas activas mediante sesión/token.
+ │
+ ├── 📂 routes/
+ │    ├── 📄 auth.routes.js    ──► Rutas de login/logout (/api/login).
+ │    └── 📄 trenes.routes.js  ──► Endpoints de trenes (/api/trenes, /api/trenes/:id).
+ │
+ ├── 📄 app.js                 ──► Configuración global de Express, CORS y middleware.
+ └── 📄 server.js              ──► Arranque del servidor y escucha de puerto.
+
+───────────────────────────────────────────────────────────────────────────────
+
+ 📂 tests/ & 📂 tests-e2e/     ──► Pruebas automatizadas del sistema (Unitarias y E2E).
