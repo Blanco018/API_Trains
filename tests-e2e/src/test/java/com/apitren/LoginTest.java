@@ -3,14 +3,14 @@ package com.apitren;
 // Importación de clases de Selenium WebDriver
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 // Importaciones de JUnit 5
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class LoginTest {
-
+public class LoginTest {    
     @SuppressWarnings("deprecation")
     @Test
     public void testUserLogin() throws Exception {
@@ -23,9 +23,9 @@ public class LoginTest {
             driver.get("https://api-trains.onrender.com/login");
             
             String currentUserHTMLPath="usernameLogIn";
-            String currentUser="QAuser";
+            String currentUser="QAuser_1";
             String currentPasswordHTMLPath="passwordLogIn";
-            String currentPassword="123456789";
+            String currentPassword="QApassword123";
             
             // 1. Localizar el campo de usuario y escribir el texto
             Thread.sleep(2000);

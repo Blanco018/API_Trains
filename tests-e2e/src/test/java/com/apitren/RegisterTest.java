@@ -75,13 +75,20 @@ public class RegisterTest {
 
             // 3. Clic en el botón de submit
             WebElement submitBtn = wait.until(
-                ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']"))
+                ExpectedConditions.elementToBeClickable(By.xpath("//button[text()='Registrarse']"))
             );
             Thread.sleep(800); // Pausa visual antes de pulsar el botón
             submitBtn.click();
 
+            WebElement accederWeb = wait.until(
+                ExpectedConditions.elementToBeClickable(By.cssSelector("button[id='btnModalYes']"))
+            );
+            Thread.sleep(500);
+            accederWeb.click();
+
+            Thread.sleep(6000);
             // 4. Validar redirección
-            String expectedUrl = "https://api-trains.onrender.com/login";
+            String expectedUrl = "https://api-trains.onrender.com/";
             wait.until(ExpectedConditions.urlToBe(expectedUrl));
 
             String currentUrl = driver.getCurrentUrl();
