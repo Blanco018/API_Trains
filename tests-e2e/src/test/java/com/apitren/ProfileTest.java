@@ -15,7 +15,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class FindATrain {
+public class ProfileTest {
 
     // Método auxiliar para tipear simulando a un usuario real (letra por letra)
     private void typeHumanLike(WebElement element, String text) throws InterruptedException {
@@ -27,7 +27,7 @@ public class FindATrain {
     }
 
     @Test
-    public void testFindATrain() {
+    public void testGoProfile() {
         System.setProperty("webdriver.chrome.silentOutput", "true");
         Logger.getLogger("org.openqa.selenium").setLevel(Level.OFF);
 
@@ -45,12 +45,7 @@ public class FindATrain {
             String currentUserHTMLPath="usernameLogIn";
             String currentUser="QAuser_1";
             String currentPasswordHTMLPath="passwordLogIn";
-            String currentPassword="QApassword123";
-            
-            String inputSearchElement="search";
-            String currentTrain="metro";
-            String idSpecificTrain="11";
-            String expectedUrlTrainDetails="https://api-trains.onrender.com/html/TrenesDetalles.html?id="+idSpecificTrain;
+            String currentPassword="QApassword123";         
             
             // 1. Escribir usuario de forma visible
             WebElement userInput = wait.until(
@@ -73,7 +68,7 @@ public class FindATrain {
             Thread.sleep(800); // Pausa visual antes de pulsar el botón
             submitBtn.click();
             
-            Thread.sleep(6000);
+            Thread.sleep(5000);
             
             String currentUrl = driver.getCurrentUrl();
             // 4. Validar redirección
@@ -83,38 +78,25 @@ public class FindATrain {
             } else {
                 System.err.println("[ERROR] INICIO SESIÓN FALLIDO: " + currentUrl);
             }
-
             assertEquals(expectedUrl, currentUrl, "La URL tras el INICIO DE SESIÓN no coincide con la esperada.");
 
-            //5.ESCRIBIR EN EL BUSCADOR
-            WebElement inputSearch = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(By.id(inputSearchElement))
+            //5. LOCALIZAR USUARIO
+            WebElement userSearch = wait.until(
+                ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@id='username-display']"))
             );
             Thread.sleep(800); // Pausa visual antes de pulsar el botón
-            typeHumanLike(inputSearch,currentTrain );
-            Thread.sleep(1000);
-
-            //6. LOCALIZAR TABLA , Y LOCALIZAR "TREN" EN CONCRETO
-            wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//tbody[@id='tabla-trenes']")));
-            WebElement specificTrain = wait.until(
-                ExpectedConditions.visibilityOfElementLocated(By.xpath("//tr[@data-id='"+idSpecificTrain+"']"))
-            );
-            specificTrain.click();
+            userSearch.click();
             Thread.sleep(4000);
-            
-            //7.VALIDAR URL EXACTA DE DETALLES DEL TREN
-            String currentUrlTrainDetails = driver.getCurrentUrl();
 
-            wait.until(ExpectedConditions.urlToBe(expectedUrlTrainDetails));
-            Thread.sleep(800);
-            if (currentUrlTrainDetails.equals(expectedUrlTrainDetails)) {
-                Thread.sleep(800);
-                System.out.println("[OK] ACCESO A TREN CORRECTO : " + expectedUrlTrainDetails);
+            //6. VALIDAR REEDIRECCIÓN
+            wait.until(ExpectedConditions.urlToBe(expectedUrl));
+            if (currentUrl.equals(expectedUrl)) {
+                System.out.println("[OK] INICIO SESIÓN CORRECTO : " + currentUrl);
             } else {
-                System.err.println("[ERROR] ACCESO A TREN FALLIDO: " + expectedUrlTrainDetails);
+                System.err.println("[ERROR] INICIO SESIÓN FALLIDO: " + currentUrl);
             }
+            assertEquals(expectedUrl, currentUrl, "La URL tras el INICIO DE SESIÓN no coincide con la esperada.");
 
-            assertEquals(expectedUrlTrainDetails, currentUrlTrainDetails, "La URL tras entrar en LOS DETALLES DEL TREN no coincide con la esperada.");
 
         } catch (InterruptedException e) {
             e.printStackTrace();
